@@ -34,8 +34,8 @@ export default function LoginPage() {
  
   return (
     <form onSubmit={handleSubmit}>
-      <MinecraftInput type="username" name="username" placeholder="E-mail" isRequired = {true} />
-      <MinecraftInput type="password" name="password" placeholder="Mot de passe" isRequired = {true} />
+      <MinecraftInput label="Email" type="username" name="username" placeholder="E-mail" isRequired = {true} />
+      <MinecraftInput label="Mot de passe" type="password" name="password" placeholder="Mot de passe" isRequired = {true} />
       <MinecraftButton label="Se connecter" type="submit"></MinecraftButton>
     </form>
   )
