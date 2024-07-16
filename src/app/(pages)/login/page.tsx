@@ -3,7 +3,6 @@ import { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput'
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton'
-import { log } from 'console'
  
 export default function LoginPage() {
   const router = useRouter()
