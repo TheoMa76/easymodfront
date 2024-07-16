@@ -8,12 +8,52 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      textShadow:{
+        'custom-text-shadow': '1px 1px 0 var(--tw-shadow-color)',
       },
-    },
+
+      backgroundImage: {
+        'primary-gradient': 'linear-gradient(45deg, #2B2D42, #8D99AE)',
+        'secondary-gradient': 'linear-gradient(45deg, #EF233C, #D90429)',
+        'stone': "url('/img/stonetexture.jpg')",
+        'dirt': "url('/img/dirt.jpeg')",
+      },
+      backgroundColor: {
+        'custom-white': 'rgb(228,228,228)',
+        'custom-dark': '#2B2D42',
+        'custom-secondary': '#D90429',
+        'custom-primary': '#2B2D42',
+        'custom-primary-light': '#8D99AE',
+        'custom-secondary-light': '#EF233C',
+        'minecraft-button': '#AAAAAA',
+        'minecraft-hover': 'rgb(125,163,246)',
+        'minecraft-shadow-color': '#1f2937',
+      },
+      colors: {
+        'custom-white': '#EDF2F4',
+        'custom-dark': '#2B2D42',
+        'custom-secondary': '#D90429',
+      },
+      ringColor: {
+        'custom-secondary': '#D90429',
+      },
+      borderColor: {
+        'custom-secondary': '#D90429',
+        'custom-primary': '#2B2D42',
+        'custom-primary-light': '#8D99AE',
+        'custom-secondary-light': '#EF233C',
+        'custom-white': 'rgb(228,228,228)',
+        'custom-dark-grey':'rgb(72,72,72)',
+      },
+      content:{
+        'custom-test': '',
+      }
+    }
+  },
+  variants: {
+    extend: {
+      transform: ['hover'],
+    }
   },
   plugins: [],
 };
