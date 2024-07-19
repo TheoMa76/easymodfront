@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
-import Input from '../Inputs/Input';
-import Button from '../Buttons/Button';
+import Input from '../../atoms/Inputs/Input';
+import Button from '../../atoms/Buttons/Button';
 
 interface FormValues {
   [key: string]: string;

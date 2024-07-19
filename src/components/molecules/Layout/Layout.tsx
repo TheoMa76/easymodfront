@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import GlobalMusicPlayer from '../GlobalMusicPlayer/GlobalMusicPlayer';
+import MusicPopup from '../Popups/MusicPopup';
 interface LayoutProps {
   children: ReactNode;
   playMusic: boolean;
@@ -8,7 +8,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, playMusic }) => {
   return (
     <>
-      <GlobalMusicPlayer play={playMusic} />
+      <MusicPopup />
       <div>{children}</div>
     </>
   );

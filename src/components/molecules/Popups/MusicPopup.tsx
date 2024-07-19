@@ -1,22 +1,19 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import MinecraftButton from '../Buttons/MinecraftButton';
-import MinecraftHN from '../Texts/Title/MinecraftHN';
-import AwesomeTitle from '../Texts/Title/AwesomeTitle';
+import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
+import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
+import AwesomeTitle from '@/components/atoms/Texts/Title/AwesomeTitle';
 
 interface MusicPopupProps {
-  onAccept: () => void;
-  onDecline: () => void;
   style?: React.CSSProperties;
 }
 
 const MusicPopup: React.FC<MusicPopupProps> = ({ 
-  onAccept, 
-  onDecline,
   style = {} 
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isScreenSmall, setIsScreenSmall] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,13 +29,30 @@ const MusicPopup: React.FC<MusicPopupProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    const backgroundMusic = new Audio('./sound/minecraft.mp3');
+  
+    if (isPlaying) {
+      backgroundMusic.play();
+      backgroundMusic.loop = true;
+    } else {
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
+    }
+  
+    return () => {
+      backgroundMusic.pause();
+      backgroundMusic.currentTime = 0;
+    };
+  }, [isPlaying]);
+
   const handleAccept = () => {
-    onAccept();
+    setIsPlaying(true);
     setIsVisible(false);
   };
 
   const handleDecline = () => {
-    onDecline();
+    setIsPlaying(false);    
     setIsVisible(false);
   };
 

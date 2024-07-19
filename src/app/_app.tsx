@@ -1,8 +1,7 @@
-// pages/_app.tsx
 import type { AppProps } from 'next/app';
 import { useState } from 'react';
-import Layout from '@/components/atoms/Layout/Layout';
-import MusicPopup from '@/components/atoms/Popups/MusicPopup';
+import Layout from '@/components/molecules/Layout/Layout';
+import MusicPopup from '@/components/molecules/Popups/MusicPopup';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {

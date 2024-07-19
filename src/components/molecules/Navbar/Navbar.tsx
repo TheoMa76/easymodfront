@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
-import Button from '../Buttons/index';
-import Input from '../Inputs/index';
+import Button from '../../atoms/Buttons/index';
+import Input from '../../atoms/Inputs/index';
 import { FaHome, FaShoppingBag, FaBullhorn, FaPhone, FaSearch } from 'react-icons/fa';
 
 interface NavbarProps {
