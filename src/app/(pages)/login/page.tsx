@@ -1,42 +1,40 @@
-'use client'
-import { FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
-import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput'
-import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton'
- 
-export default function LoginPage() {
-  const router = useRouter()
- 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
- 
-    const formData = new FormData(event.currentTarget)
-    const username = formData.get('username')
-    const password = formData.get('password')
- 
+'use client';
+import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import Card from '@/components/molecules/Card/Card';
+import Form from '@/components/molecules/Forms/Form';
+
+const LoginPage = () => {
+  const router = useRouter();
+
+  const formFields = [
+    { name: 'username', label: 'Email', placeholder: 'E-mail', type: 'text' },
+    { name: 'password', label: 'Mot de passe', placeholder: 'Mot de passe', type: 'password' },
+  ];
+
+  async function handleSubmit(values: { [key: string]: string }) {
+    const { username, password } = values;
+
     const response = await fetch('https://localhost:8000/api/login_check', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
-    })
- 
+    });
+
     if (response.ok) {
-      console.log(response);
-      
-      router.push('/')
+      router.push('/');
     } else {
-      console.log(JSON.stringify({username, password}));
-      
       console.log(response);
-      
     }
   }
- 
+
   return (
-    <form onSubmit={handleSubmit}>
-      <MinecraftInput label="Email" type="username" name="username" placeholder="E-mail" isRequired = {true} />
-      <MinecraftInput label="Mot de passe" type="password" name="password" placeholder="Mot de passe" isRequired = {true} />
-      <MinecraftButton label="Se connecter" type="submit"></MinecraftButton>
-    </form>
-  )
-}
+    <div className="flex items-center w-fit md:w-full xs:w-full justify-center min-h-screen bg-gray-900 p-6">
+      <Card title="Connexion">
+        <Form formFields={formFields} onSubmit={handleSubmit} />
+      </Card>
+    </div>
+  );
+};
+
+export default LoginPage;
