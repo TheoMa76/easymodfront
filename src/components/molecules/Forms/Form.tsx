@@ -1,6 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput';
-import Button from '../../atoms/Buttons/Button';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 
 interface FormValues {
@@ -47,16 +46,18 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
       }
     });
 
-    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
+    if ('email' in values && values.email && !/\S+@\S+\.\S+/.test(values.email)) {
       newErrors.email = "L'email n'est pas valide.";
     }
 
-    if (values.password && values.password.length < 8) {
-      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères.';
-    }
+    if ('password' in values) {
+      if (values.password && values.password.length < 8) {
+        newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères.';
+      }
 
-    if (values.password !== values.confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+      if ('confirmPassword' in values && values.password !== values.confirmPassword) {
+        newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+      }
     }
 
     return newErrors;
@@ -67,8 +68,9 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
     const newErrors = validate();
 
     setErrors(newErrors);
-
+    console.log(Object.keys(newErrors).length, newErrors);
     if (Object.keys(newErrors).length === 0) {
+      console.log('Form values:', values); // Debug: log form values
       setIsSubmitted(true);
       onSubmit(values);
     }

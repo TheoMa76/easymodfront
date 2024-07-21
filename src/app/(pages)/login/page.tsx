@@ -1,5 +1,4 @@
 'use client';
-import { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
@@ -14,17 +13,23 @@ const LoginPage = () => {
 
   async function handleSubmit(values: { [key: string]: string }) {
     const { username, password } = values;
+    console.log(username, password);
 
-    const response = await fetch('https://localhost:8000/api/login_check', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const response = await fetch('https://localhost:8000/api/login_check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (response.ok) {
-      router.push('/');
-    } else {
-      console.log(response);
+      if (response.ok) {
+        router.push('/');
+      } else {
+        const errorData = await response.json();
+        console.log('Erreur de connexion:', errorData);
+      }
+    } catch (error) {
+      console.error('Erreur réseau:', error);
     }
   }
 
