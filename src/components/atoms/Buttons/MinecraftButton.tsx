@@ -49,7 +49,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
   return (
     <>
       <button
-        className={`${baseClasses} ${hoverClasses} ${beforeClasses} ${className}`}
+        className={`${baseClasses} ${hoverClasses} ${beforeClasses} ${className} flex flex-row items-center`}
         onClick={() => {
           playClickSound();
           if (onClick) onClick();
@@ -59,7 +59,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
         type={type}
         style={style}
       >
-        {icon && <span className="mr-2">{icon}</span>}
+        {icon && <span className="text-black mr-2">{icon}</span>}
         <span className={spanClasses}>{label}</span>
       </button>
     </>

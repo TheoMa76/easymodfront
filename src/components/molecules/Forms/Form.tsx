@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormValues {
   [key: string]: string;
@@ -68,47 +70,43 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
     const newErrors = validate();
 
     setErrors(newErrors);
-    console.log(Object.keys(newErrors).length, newErrors);
     if (Object.keys(newErrors).length === 0) {
-      console.log('Form values:', values); // Debug: log form values
       setIsSubmitted(true);
       onSubmit(values);
+      toast.success('Formulaire envoyé avec succès !');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 bg-custom-white shadow-md w-fit">
-      {formFields.map((field) => (
-        <div key={field.name} className="text-center items-center m-2">
-          <MinecraftInput
-            label={field.label}
-            placeholder={field.placeholder}
-            value={values[field.name]}
-            onChange={handleChange(field.name)}
-            variant="primary"
-            className="text-xl"
-            type={field.type}
-            name={field.name}
-            isRequired={true}
-          />
-          {errors[field.name] && (
-            <p className="text-custom-secondary text-lg mt-2" role="alert" aria-label={errors[field.name]}>
-              {errors[field.name]}
-            </p>
-          )}
+    <div className="flex items-center justify-center p-6">
+      <form onSubmit={handleSubmit} className="p-6 bg-custom-white shadow-md w-fit">
+        {formFields.map((field) => (
+          <div key={field.name} className="flex flex-col items-center m-2 w-72">
+            <MinecraftInput
+              label={field.label}
+              placeholder={field.placeholder}
+              value={values[field.name]}
+              onChange={handleChange(field.name)}
+              variant="primary"
+              className="text-xl w-full"
+              type={field.type}
+              name={field.name}
+              isRequired={true}
+            />
+            {errors[field.name] && (
+              <p className="text-custom-secondary text-lg mt-2" role="alert" aria-label={errors[field.name]}>
+                {errors[field.name]}
+              </p>
+            )}
+          </div>
+        ))}
+
+        <div className="flex justify-center">
+          <MinecraftButton type="submit" variant="primary" label="Soumettre" className="text-2xl m-2" />
         </div>
-      ))}
-
-      <div className="flex justify-center">
-        <MinecraftButton type="submit" variant="primary" label="Soumettre" className="text-2xl m-2" />
-      </div>
-
-      {isSubmitted && (
-        <p className="text-green-500 text-lg mt-4 text-center" role="status">
-          Formulaire envoyé avec succès !
-        </p>
-      )}
-    </form>
+      </form>
+      <ToastContainer />
+    </div>
   );
 };
 

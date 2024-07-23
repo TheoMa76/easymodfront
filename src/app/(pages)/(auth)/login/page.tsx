@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
+import Cookies from 'js-cookie'
+
 
 const LoginPage = () => {
   const router = useRouter();
@@ -13,7 +15,6 @@ const LoginPage = () => {
 
   async function handleSubmit(values: { [key: string]: string }) {
     const { username, password } = values;
-    console.log(username, password);
 
     try {
       const response = await fetch('https://localhost:8000/api/login_check', {
@@ -23,7 +24,9 @@ const LoginPage = () => {
       });
 
       if (response.ok) {
-        router.push('/');
+        const data = await response.json();
+        const token = data.token;
+        Cookies.set('token', token);
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);
@@ -34,7 +37,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="flex items-center w-fit md:w-full xs:w-full justify-center min-h-screen bg-gray-900 p-6">
+    <div className="flex items-center w-fit md:w-full xs:w-full justify-center min-h-screen p-6">
       <Card title="Connexion">
         <Form formFields={formFields} onSubmit={handleSubmit} />
       </Card>

@@ -1,16 +1,19 @@
-import React, { ReactNode } from 'react';
-import MusicPopup from '../Popups/MusicPopup';
-interface LayoutProps {
-  children: ReactNode;
-  playMusic: boolean;
-}
+'use client';
+import React from 'react';
+import Navbar from '@/components/molecules/Navbar/Navbar';
 
-const Layout: React.FC<LayoutProps> = ({ children, playMusic }) => {
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <>
-      <MusicPopup />
-      <div>{children}</div>
-    </>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        {children}
+      </main>
+    </div>
   );
 };
 

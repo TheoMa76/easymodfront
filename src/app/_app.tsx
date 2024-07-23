@@ -1,33 +1,13 @@
+import React from 'react';
 import type { AppProps } from 'next/app';
-import { useState } from 'react';
 import Layout from '@/components/molecules/Layout/Layout';
-import MusicPopup from '@/components/molecules/Popups/MusicPopup';
-import '../styles/globals.css';
-
-function MyApp({ Component, pageProps }: AppProps) {
-  const [playMusic, setPlayMusic] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
-
-  const handleAccept = () => {
-    setPlayMusic(true);
-    setShowPopup(false);
-  };
-
-  const handleDecline = () => {
-    setPlayMusic(false);
-    setShowPopup(false);
-  };
-
+import '@/styles/globals.css';
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <>
-      {showPopup && (
-        <MusicPopup onAccept={handleAccept} onDecline={handleDecline} />
-      )}
-      <Layout playMusic={playMusic}>
-        <Component {...pageProps} />
-      </Layout>
-    </>
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
   );
-}
+};
 
 export default MyApp;

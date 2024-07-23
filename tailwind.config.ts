@@ -17,6 +17,7 @@ const config: Config = {
         'secondary-gradient': 'linear-gradient(45deg, #EF233C, #D90429)',
         'stone': 'url(\'/img/stonetexture.jpg\')',
         'dirt': 'url(\'/img/dirt.jpeg\')',
+        'default-minecraft': 'url(\'/img/minecraft-default-bg.jpg\')',
       },
       backgroundColor: {
         'custom-white': 'rgb(228,228,228)',
