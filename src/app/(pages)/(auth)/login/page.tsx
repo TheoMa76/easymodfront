@@ -17,7 +17,7 @@ const LoginPage = () => {
     const { username, password } = values;
 
     try {
-      const response = await fetch('https://localhost:8000/api/login_check', {
+      const response = await fetch('http://localhost:8000/api/login_check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

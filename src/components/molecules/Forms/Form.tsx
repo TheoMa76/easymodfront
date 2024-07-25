@@ -1,8 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 interface FormValues {
   [key: string]: string;
@@ -105,7 +104,6 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
           <MinecraftButton type="submit" variant="primary" label="Soumettre" className="text-2xl m-2" />
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 };
