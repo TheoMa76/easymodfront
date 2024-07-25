@@ -33,7 +33,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
   isRequired = false,
 }) => {
   const baseClasses =
-    'appearance-none border-2 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
+    'appearance-none border-2 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-fit';
 
   return (
     <div className="relative">

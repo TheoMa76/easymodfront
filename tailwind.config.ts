@@ -18,6 +18,7 @@ const config: Config = {
         'stone': 'url(\'/img/stonetexture.jpg\')',
         'dirt': 'url(\'/img/dirt.jpeg\')',
         'default-minecraft': 'url(\'/img/minecraft-default-bg.jpg\')',
+        'deepslate': 'url(\'/img/Deepslate.png\')',
       },
       backgroundColor: {
         'custom-white': 'rgb(228,228,228)',
@@ -48,8 +49,11 @@ const config: Config = {
       },
       content:{
         'custom-test': '',
-      }
-    }
+      },
+      zIndex: {
+        'infinite': '999999',
+      },
+    },
   },
   variants: {
     extend: {

@@ -3,6 +3,10 @@ import Form from '@/components/molecules/Forms/Form';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import Modal from 'react-modal';
+import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
+import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
+import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 
 async function getConnectedUser() {
   const token = Cookies.get('token');
@@ -56,23 +60,49 @@ const formFields = [
 
 const Profil = () => {
   const [userData, setUserData] = useState<{ [key: string]: string } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const user = await getConnectedUser();
       if (user) {
         setUserData(user);
+        console.log(user);
       }
     };
     fetchUserData();
   }, []);
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
-    <Form
-      formFields={formFields}
-      initialValues={userData || {}}
-      onSubmit={handleSubmit}
-    />
+    <div className="flex flex-col items-center justify-center min-h-screen p-6">
+    <MinecraftHN as='h1' className="text-4xl">Profil</MinecraftHN>
+    <MinecraftText text="Voici votre profil"></MinecraftText>
+      <MinecraftButton onClick={openModal} label="Éditer le profil" className="btn btn-primary z-0"/>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Modifier le profil"
+        className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-infinite"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+      >
+        <div className="bg-white p-6 rounded-lg shadow-lg relative">
+          <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            &times;
+          </button>
+          <Form
+            formFields={formFields}
+            initialValues={userData || {}}
+            onSubmit={async (values) => {
+              await handleSubmit(values);
+              closeModal();
+            }}
+          />
+        </div>
+      </Modal>
+    </div>
   );
 }
 

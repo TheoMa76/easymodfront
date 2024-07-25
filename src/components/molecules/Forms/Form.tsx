@@ -73,7 +73,6 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {} })
     if (Object.keys(newErrors).length === 0) {
       setIsSubmitted(true);
       onSubmit(values);
-      toast.success('Formulaire envoyé avec succès !');
     }
   };
 

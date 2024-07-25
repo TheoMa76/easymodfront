@@ -16,7 +16,7 @@ interface ButtonProps {
 }
 
 const playClickSound = () => {
-  const audio = new Audio('./sound/minecraft-menu-button.mp3');
+  const audio = new Audio('/sound/minecraft-menu-button.mp3');
   if (audio) {
     audio.currentTime = 0;
     audio.play().catch((error) => {

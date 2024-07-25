@@ -11,7 +11,6 @@ const Navbar: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const toggleMenu = () => {
-    // Check if token is present when menu is toggled
     const token = Cookies.get('token');
     if (token) {
       try {
@@ -67,7 +66,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <div className="relative">
+      <div className="absolute w-full h-full">
         <div className="flex flex-wrap flex-col items-center justify-between w-full bg-dirt bg-auto">
           <div className='w-1/4 m-auto'>
             <AwesomeTitle>Craftez votre mod!</AwesomeTitle>
@@ -75,11 +74,10 @@ const Navbar: React.FC = () => {
           <MinecraftButton
             label="Menu"
             onClick={toggleMenu}
-            className="self-center mb-3"
+            className="self-center mb-3 z-0"
           />
         </div>
 
-        {/* Menu Overlay */}
         {isMenuVisible && (
           <div className="fixed inset-0 w-full bg-black bg-opacity-80 flex items-center justify-center z-50">
             <Menu

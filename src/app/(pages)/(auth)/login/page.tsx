@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
 import Cookies from 'js-cookie'
+import { toast } from 'react-toastify';
 
 
 const LoginPage = () => {
@@ -27,6 +28,7 @@ const LoginPage = () => {
         const data = await response.json();
         const token = data.token;
         Cookies.set('token', token);
+        toast.success('Connexion réussie');
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);
