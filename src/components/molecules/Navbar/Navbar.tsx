@@ -46,8 +46,8 @@ const Navbar: React.FC = () => {
           {
             label: 'Mon compte',
             buttons: [
-              { label: 'Profil', route: '/profile', additionalOnClick: handleMenuClose },
-              { label: 'Progression', route: '/progress', additionalOnClick: handleMenuClose },
+              { label: 'Profil', route: '/dashboard/profil', additionalOnClick: handleMenuClose },
+              { label: 'Progression', route: '/dashboard//progression', additionalOnClick: handleMenuClose },
               { label: 'Se déconnecter', additionalOnClick: handleLogout }
             ]
           }

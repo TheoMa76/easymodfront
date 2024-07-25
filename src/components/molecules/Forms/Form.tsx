@@ -21,11 +21,12 @@ interface FormField {
 interface FormProps {
   formFields: FormField[];
   onSubmit: (values: FormValues) => void;
+  initialValues?: FormValues;
 }
 
-const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
+const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {} }) => {
   const initialFormValues: FormValues = formFields.reduce((acc, field) => {
-    acc[field.name] = '';
+    acc[field.name] = initialValues[field.name] || '';
     return acc;
   }, {} as FormValues);
 
@@ -56,8 +57,8 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit }) => {
         newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères.';
       }
 
-      if ('confirmPassword' in values && values.password !== values.confirmPassword) {
-        newErrors.confirmPassword = 'Les mots de passe ne correspondent pas.';
+      if ('confirm_password' in values && values.password !== values.confirm_password) {
+        newErrors.confirm_password = 'Les mots de passe ne correspondent pas.';
       }
     }
 
