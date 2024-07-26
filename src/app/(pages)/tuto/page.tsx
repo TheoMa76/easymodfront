@@ -1,79 +1,90 @@
-// pages/tuto.tsx
 'use client';
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import TutoCard from '@/components/molecules/Card/TutoCard';
+import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 
 interface Tutoriel {
-    id: number;
-    title: string;
-    description: string;
-    estimated_time: string;
-    game: string;
-    position: number;
+  id: number;
+  title: string;
+  description: string;
+  estimated_time: string;
+  game: string;
+  position: number;
 }
 
 const fetchTutoriels = async (): Promise<Tutoriel[]> => {
-    try {
-        const token = Cookies.get('token');
-        const response = await fetch('https://localhost:8000/tuto/', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        });
-        if (response.ok) {
-            const data: Tutoriel[] = await response.json();
-            return data.sort((a, b) => a.position - b.position);
-        } else {
-            const errorData = await response.json();
-            console.error('Erreur de connexion:', errorData);
-            return [];
-        }
-    } catch (error) {
-        console.error('Erreur réseau:', error);
-        return [];
+  try {
+    const response = await fetch('/api/tuto', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (response.ok) {
+      const data: Tutoriel[] = await response.json();
+      return data;
+    } else {
+      const errorData = await response.json();
+      console.error('Erreur de connexion:', errorData);
+      return [];
     }
+  } catch (error) {
+    console.error('Erreur réseau:', error);
+    return [];
+  }
 };
 
 const TutoPage: React.FC = () => {
-    const [tutoriels, setTutoriels] = useState<Tutoriel[]>([]);
-    const [hoveredTuto, setHoveredTuto] = useState<Tutoriel | null>(null);
+  const [tutoriels, setTutoriels] = useState<Tutoriel[]>([]);
+  const [hoveredTuto, setHoveredTuto] = useState<Tutoriel | null>(null);
 
-    useEffect(() => {
-        const loadTutoriels = async () => {
-            const data = await fetchTutoriels();
-            console.log(data);
-            setTutoriels(data);
-        };
+  useEffect(() => {
+    const loadTutoriels = async () => {
+      const data = await fetchTutoriels();
+      console.log(data);
+      setTutoriels(data);
+    };
 
-        loadTutoriels();
-    }, []);
+    loadTutoriels();
+  }, []);
 
-    return (
-        <div className='w-full mt-3 flex flex-col justify-start px-3'>
-            <div className='bg-black bg-opacity-50'>
-                {tutoriels.map((tuto) => (
-                    <div
-                        key={`card-${tuto.id}`}
-                        onMouseEnter={() => setHoveredTuto(tuto)}
-                        onMouseLeave={() => setHoveredTuto(null)}
-                        className='hover:border-4 hover:border-white hover:border-opacity-50 flex items-center'
-                    >
-                        <TutoCard
-                            key={tuto.id}
-                            id={tuto.id}
-                            title={tuto.title}
-                            estimated_time={tuto.estimated_time}
-                        />
-                        {hoveredTuto?.id === tuto.id && (
-                            <div className='ml-4 text-white'>
-                                {tuto.description ? tuto.description : tuto.title}
-                            </div>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+  return (
+    <div className='w-full mt-3 flex flex-col justify-start px-3'>
+      <div className='bg-black bg-opacity-50'>
+        {tutoriels.map((tuto) => (
+          <div
+            key={`card-${tuto.id}`}
+            onMouseEnter={() => setHoveredTuto(tuto)}
+            onMouseLeave={() => setHoveredTuto(null)}
+            className='relative flex flex-col items-center mb-4 hover:border-4 lg:hover:border-white lg:hover:border-opacity-50 lg:flex lg:items-center'
+          >
+            <TutoCard
+              id={tuto.id}
+              title={tuto.title}
+              estimated_time={tuto.estimated_time}
+            />
+            {hoveredTuto?.id === tuto.id && (
+              <div className='lg:ml-4 lg:text-white lg:relative absolute top-0 left-0 w-full h-full bg-black bg-opacity-75 flex flex-col items-center justify-between text-white p-4 md:hidden overflow-y-auto max-h-[80vh]'>
+                <div className='w-full flex flex-col items-center'>
+                  <div className='text-center'>
+                    {tuto.description ? tuto.description : tuto.title}
+                  </div>
+                  <MinecraftButton
+                    label="Retour"
+                    onClick={() => setHoveredTuto(null)}
+                    className='mb-4 px-4 py-2 bg-gray-800 rounded'
+                  />
+                </div>
+              </div>
+            )}
+            {hoveredTuto?.id === tuto.id && (
+              <div className='hidden md:block ml-4 text-white overflow-y-auto max-h-[80vh]'>
+                {tuto.description || tuto.title}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default TutoPage;

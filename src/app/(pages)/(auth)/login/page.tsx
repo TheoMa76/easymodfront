@@ -2,8 +2,7 @@
 import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
-import Cookies from 'js-cookie'
-
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -17,7 +16,7 @@ const LoginPage = () => {
     const { username, password } = values;
 
     try {
-      const response = await fetch('https://localhost:8000/api/login_check', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -27,6 +26,7 @@ const LoginPage = () => {
         const data = await response.json();
         const token = data.token;
         Cookies.set('token', token);
+        router.push('/dashboard');
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);

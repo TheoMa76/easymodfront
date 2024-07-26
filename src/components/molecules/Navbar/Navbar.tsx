@@ -33,10 +33,11 @@ const Navbar: React.FC = () => {
 
         {/* Menu Overlay */}
         {isMenuVisible && (
-          <div className="fixed inset-0 w-full bg-black bg-opacity-80 flex items-center justify-center z-50">
+          <div className="fixed inset-0  bg-black bg-opacity-80 flex items-center justify-center z-50">
             <Menu
               buttons={[
                 { label: 'Accueil', route: '/',onClick: handleMenuClose },
+                { label: 'Tutoriels', route: '/tuto',onClick: handleMenuClose },
                 {
                   label: 'Authentification',
                   buttons: [

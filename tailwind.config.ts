@@ -18,6 +18,7 @@ const config: Config = {
         'stone': 'url(\'/img/stonetexture.jpg\')',
         'dirt': 'url(\'/img/dirt.jpeg\')',
         'default-minecraft': 'url(\'/img/minecraft-default-bg.jpg\')',
+        'obsi': 'url(\'/img/obsi.jpeg\')',
       },
       backgroundColor: {
         'custom-white': 'rgb(228,228,228)',
