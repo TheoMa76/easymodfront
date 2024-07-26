@@ -47,7 +47,7 @@ const TutoPage: React.FC = () => {
   }, []);
 
   return (
-    <div className='w-full mt-3 flex flex-col justify-start px-3'>
+    <div className='w-full flex mt-5 flex-col justify-start px-3'>
       <div className='bg-black bg-opacity-50'>
         {tutoriels.map((tuto) => (
           <div

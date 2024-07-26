@@ -34,8 +34,8 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className="flex items-center w-fit md:w-full xs:w-full justify-center min-h-screen p-6">
-      <Card title="S'enregistrer">
+    <div className="flex items-center w-full justify-center my-8">
+      <Card title="S'enregistrer" className='lg:w-1/2 w-full'>
         <Form formFields={formFields} onSubmit={handleSubmit} />
       </Card>
     </div>

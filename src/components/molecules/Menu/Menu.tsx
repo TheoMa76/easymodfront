@@ -65,8 +65,8 @@ const Menu: React.FC<MenuProps> = ({ buttons }) => {
 
   return (
     <div className="flex items-center w-full justify-center min-h-screen">
-      <Card title="Naviguez où vous voulez!" useAwesometitle={true}>
-        <div className="flex flex-col items-center w-full">
+      <Card title="Naviguez où vous voulez!" useAwesometitle={true} className='w-full'>
+        <div className="flex flex-col items-center w-fit lg:w-1/4 mb-5">
           {menuState === 'initial' && (
             currentButtons.map((button, index) => (
               <MinecraftButton

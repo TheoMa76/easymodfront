@@ -33,16 +33,16 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
   isRequired = false,
 }) => {
   const baseClasses =
-    'appearance-none border-2 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-fit';
+    'appearance-none text-black minecraftTextNoShadow border-2 py-2 px-3 leading-tight w-full';
 
   return (
-    <div className="relative">
+    <>
       {icon && (
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           {icon}
         </div>
       )}
-      <label htmlFor={label} className="text-custom-dark">{label}</label>
+      <label htmlFor={label} className="text-white minecraftText self-start">{label}</label>
       <input
         id={label}
         type={type}
@@ -56,7 +56,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
         name = {name}
         required = {isRequired}
       />
-    </div>
+    </>
   );
 };
 

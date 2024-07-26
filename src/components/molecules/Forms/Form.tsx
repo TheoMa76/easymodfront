@@ -77,17 +77,17 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {} })
   };
 
   return (
-    <div className="flex items-center justify-center p-6">
-      <form onSubmit={handleSubmit} className="p-6 bg-custom-white shadow-md w-fit">
+    <div className="flex items-center w-full p-5 lg:w-1/2 text-white justify-center mb-8">
+      <form onSubmit={handleSubmit} className='w-full'>
         {formFields.map((field) => (
-          <div key={field.name} className="flex flex-col items-center m-2 w-72">
+          <div key={field.name} className="flex flex-col items-center w-full">
             <MinecraftInput
               label={field.label}
               placeholder={field.placeholder}
               value={values[field.name]}
               onChange={handleChange(field.name)}
               variant="primary"
-              className="text-xl w-full"
+              className="text-xl"
               type={field.type}
               name={field.name}
               isRequired={true}

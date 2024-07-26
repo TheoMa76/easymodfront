@@ -9,13 +9,16 @@ import { jwtDecode } from 'jwt-decode';
 const Navbar: React.FC = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const toggleMenu = () => {
     const token = Cookies.get('token');
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        console.log('decodedToken:', decodedToken);
+        if(decodedToken.roles.includes('ROLE_ADMIN')) {
+          setIsAdmin(true);
+        }
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Token decode error:', error);
@@ -46,10 +49,15 @@ const Navbar: React.FC = () => {
             label: 'Mon compte',
             buttons: [
               { label: 'Profil', route: '/dashboard/profil', additionalOnClick: handleMenuClose },
-              { label: 'Progression', route: '/dashboard//progression', additionalOnClick: handleMenuClose },
+              { label: 'Progression', route: '/dashboard/progression', additionalOnClick: handleMenuClose },
               { label: 'Se déconnecter', additionalOnClick: handleLogout }
             ]
-          }
+          },
+          { label: 'Tutoriels', route: '/tuto', onClick: handleMenuClose },
+          ...(isAdmin ? [{ label: 'Administration', buttons: [
+            { label: 'Utilisateurs', route: '/administration/user', additionalOnClick: handleMenuClose },
+            { label: 'Tutoriels', route: '/administration/tuto', additionalOnClick: handleMenuClose }
+          ] }] : []),
         ]
       : [
           {
@@ -66,7 +74,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <div className="absolute w-full h-full">
+      <div className="relative w-full">
         <div className="flex flex-wrap flex-col items-center justify-between w-full bg-dirt bg-auto">
           <div className='w-1/4 m-auto'>
             <AwesomeTitle>Craftez votre mod!</AwesomeTitle>
@@ -79,7 +87,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {isMenuVisible && (
-          <div className="fixed inset-0  bg-black bg-opacity-80 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
             <Menu
               buttons={buttons}
             />
