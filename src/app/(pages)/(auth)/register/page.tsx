@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify';
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -16,14 +18,27 @@ const RegisterPage = () => {
     const { email, password } = values;
 
     try {
-      const response = await fetch('https://localhost:8000/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
-      });
+      });      
 
       if (response.ok) {
-        router.push('/');
+        toast.success('Inscription réussie ! Connexion en cours...');
+        const username = email;
+        const loginresp = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        if(loginresp.ok){
+          const logindata = await loginresp.json();
+          const token = logindata.token;
+          Cookies.set('token', token);
+          router.push('/dashboard');
+          toast.success('Connexion réussie');
+        }
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);

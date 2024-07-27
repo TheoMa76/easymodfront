@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`bg-default-minecraft w-screen h-screen bg-cover ${inter.className}`}>
+      <body className={`bg-default-minecraft w-screen h-screen bg-repeat ${inter.className}`}>
         <ToastContainer />
         <Navbar />
         <div className="bg-blur-dark fixed top-0 left-0 w-full h-full object-cover z-negative;"></div>

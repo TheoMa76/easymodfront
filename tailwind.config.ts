@@ -20,6 +20,7 @@ const config: Config = {
         'default-minecraft': 'url(\'/img/minecraft-default-bg.jpg\')',
         'obsi': 'url(\'/img/obsi.jpeg\')',
         'deepslate': 'url(\'/img/Deepslate.png\')',
+        'glowstone': 'url(\'/img/glowstone.jpg\')',
       },
       backgroundColor: {
         'custom-white': 'rgb(228,228,228)',

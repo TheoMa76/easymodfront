@@ -2,15 +2,14 @@ import React from 'react';
 import './minecraftText.css';
 
 type MinecraftTextProps = {
-  text: string;
+  children: React.ReactNode;
   className?: string;
+  size?: string;
 };
 
-const MinecraftText: React.FC<MinecraftTextProps> = ({ text, className }) => {
+const MinecraftText: React.FC<MinecraftTextProps> = ({ children, className,size = 'text-xl' }) => {
   return (
-    <div className="bg-deepslate p-4">
-      <p className={`minecraft-text text-white text-xl minecraftTextBlock ${className}`}>{text}</p>
-    </div>
+    <p className={`minecraft-text text-white px-4 py-2 ${size} minecraftTextBlock ${className}`}>{children}</p>
   );
 };
 

@@ -58,6 +58,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
         aria-label={label}
         type={type}
         style={style}
+        id={label}
       >
         {icon && <span className="text-black mr-2">{icon}</span>}
         <span className={spanClasses}>{label}</span>

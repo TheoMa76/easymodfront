@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
+import Card from '@/components/molecules/Card/Card';
 
 async function getConnectedUser() {
   const token = Cookies.get('token');
@@ -79,7 +80,6 @@ const Profil = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6">
     <MinecraftHN as='h1' className="text-4xl">Profil</MinecraftHN>
-    <MinecraftText text="Voici votre profil"></MinecraftText>
       <MinecraftButton onClick={openModal} label="Éditer le profil" className="btn btn-primary z-0"/>
       <Modal
         isOpen={isModalOpen}
@@ -88,10 +88,7 @@ const Profil = () => {
         className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-infinite"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50"
       >
-        <div className="bg-white p-6 rounded-lg shadow-lg relative">
-          <button onClick={closeModal} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
-            &times;
-          </button>
+        <Card title="Editer votre profil." className='w-full'>
           <Form
             formFields={formFields}
             initialValues={userData || {}}
@@ -100,7 +97,8 @@ const Profil = () => {
               closeModal();
             }}
           />
-        </div>
+          <MinecraftButton label="Retour" onClick={closeModal}></MinecraftButton>
+        </Card>
       </Modal>
     </div>
   );

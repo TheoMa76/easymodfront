@@ -6,18 +6,17 @@ export async function GET() {
     const token = Cookies.get('token');
 
     const response = await fetch('http://localhost:8000/tuto/', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      method: 'GET'
     });
 
     if (response.ok) {
       const data = await response.json();
-      return NextResponse.json(data.sort((a, b) => a.position - b.position), { status: 200 });
+      return NextResponse.json(data.sort((a:any, b:any) => a.position - b.position), { status: 200 });
     } else {
       const errorData = await response.json();
       return NextResponse.json(errorData, { status: response.status });
     }
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json({ message: 'Erreur réseau', error: error.message }, { status: 500 });
   }
 }
