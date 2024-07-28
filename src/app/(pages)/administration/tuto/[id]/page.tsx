@@ -6,6 +6,7 @@ import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Form from '@/components/molecules/Forms/Form';
 import Card from '@/components/molecules/Card/Card';
+import Cookies from 'js-cookie';
 
 interface Tutoriel {
   id: number;
@@ -95,9 +96,10 @@ const TutoPage: React.FC = () => {
     };
 
     try {
+      const token = Cookies.get('token');
       const response = await fetch(`http://localhost:8000/admin/tuto/${id}/update`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(updatedTutoriel),
       });
 
