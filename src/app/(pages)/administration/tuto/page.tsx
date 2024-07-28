@@ -5,6 +5,8 @@ import TextChat from '@/components/atoms/Texts/TextBlock/TextChat';
 import Card from '@/components/molecules/Card/Card';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 interface Tutoriel {
   id: number;
@@ -59,6 +61,11 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
   }
 };
 
+const goToEdit = (id:any) => {
+  console.log(id);
+
+};
+
 const ContentCard: React.FC<{ content: Content }> = ({ content }) => (
   <Card className='mb-3 w-full' bg='bg-dirt'>
     {content.text && <MinecraftText className='text-white'>{content.text}</MinecraftText>}
@@ -79,7 +86,9 @@ const ChapterCard: React.FC<{ chapter: Chapter }> = ({ chapter }) => (
 
 const TutorielCard: React.FC<{ tutoriel: Tutoriel }> = ({ tutoriel }) => (
   <Card title={tutoriel.title} className='w-full mb-5'>
-    <MinecraftButton label={`Modifier`}  />
+    <Link href={`/administration/tuto/${tutoriel.title}?id=${tutoriel.id}`}>
+        <MinecraftButton label="Modifier" />
+    </Link>
     <MinecraftText className='text-white'>{tutoriel.description}</MinecraftText>
     <MinecraftText className='text-white'>Temps estimé: {tutoriel.estimated_time}</MinecraftText>
     {tutoriel.chapters && tutoriel.chapters.map(chapter => (

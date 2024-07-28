@@ -22,9 +22,10 @@ interface FormProps {
   formFields: FormField[];
   onSubmit: (values: FormValues) => void;
   initialValues?: FormValues;
+  putSubmit?: boolean;
 }
 
-const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {} }) => {
+const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},putSubmit = true }) => {
   const initialFormValues: FormValues = formFields.reduce((acc, field) => {
     acc[field.name] = initialValues[field.name] || '';
     return acc;
@@ -99,10 +100,11 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {} })
             )}
           </div>
         ))}
-
+        {putSubmit &&
         <div className="flex justify-center">
           <MinecraftButton type="submit" variant="primary" label="Soumettre" className="text-2xl m-2" />
         </div>
+        }
       </form>
     </div>
   );
