@@ -48,6 +48,24 @@ const formatDate = (date: string): string => {
   return d.toLocaleString();
 }
 
+const handleDelete = async (id: number) => {
+  try {
+    const response = await fetch(`/api/administration/user/${id}/delete`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+    } else {
+      const errorData = await response.json();
+      console.error('Erreur de connexion:', errorData);
+    }
+  } catch (error) {
+    console.error('Erreur réseau:', error);
+  }
+}
+
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
   return (
     <Card className='m-5 w-full'>
@@ -58,6 +76,7 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
         <p>Cree le: {formatDate(user.created_at)}</p>
         <p>Modifie le: {formatDate(user.updated_at)}</p>
       </TextChat>
+      <MinecraftButton label = "Supprimer"></MinecraftButton>
       <Link href={`/administration/user/${user.id}?id=${user.id}`}>
           <MinecraftButton label="Modifier"></MinecraftButton>
       </Link>
