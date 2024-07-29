@@ -16,6 +16,7 @@ interface FormField {
   label: string;
   placeholder: string;
   type: string;
+  options?: string[];
 }
 
 interface FormProps {
@@ -27,15 +28,22 @@ interface FormProps {
 
 const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},putSubmit = true }) => {
   const initialFormValues: FormValues = formFields.reduce((acc, field) => {
-    acc[field.name] = initialValues[field.name] || '';
+    if (field.type === 'select' && field.options && field.options.length > 0) {
+      acc[field.name] = initialValues[field.name] || field.options[0];
+    } else {
+      acc[field.name] = initialValues[field.name] || '';
+    }
     return acc;
   }, {} as FormValues);
+  
 
   const [values, setValues] = useState<FormValues>(initialFormValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleChange = (field: string) => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (field: string) => (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setValues({ ...values, [field]: event.target.value });
     setErrors({ ...errors, [field]: '' });
   };
@@ -79,9 +87,23 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},pu
 
   return (
     <div className="flex items-center w-full p-5 lg:w-1/2 text-white justify-center mb-8">
-      <form onSubmit={handleSubmit} className='w-full'>
-        {formFields.map((field) => (
-          <div key={field.name} className="flex flex-col items-center w-full">
+       <form onSubmit={handleSubmit} className="w-full">
+      {formFields.map((field) => (
+        <div key={field.name} className="flex flex-col items-center w-full">
+          {field.type === 'select' ? (
+            <MinecraftInput
+              label={field.label}
+              placeholder={field.placeholder}
+              value={values[field.name]}
+              onChange={handleChange(field.name)}
+              variant="primary"
+              className="text-xl"
+              type={field.type}
+              name={field.name}
+              isRequired={true}
+              options={field.options} // Pass options to MinecraftInput
+            />
+          ) : (
             <MinecraftInput
               label={field.label}
               placeholder={field.placeholder}
@@ -93,6 +115,7 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},pu
               name={field.name}
               isRequired={true}
             />
+          )}
             {errors[field.name] && (
               <p className="text-custom-secondary text-lg mt-2" role="alert" aria-label={errors[field.name]}>
                 {errors[field.name]}

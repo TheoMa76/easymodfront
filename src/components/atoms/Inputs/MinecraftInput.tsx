@@ -16,6 +16,7 @@ interface MinecraftInputProps {
   label?: string;
   type?: string;
   isRequired?: boolean;
+  options?: string[];
 }
 
 const MinecraftInput: React.FC<MinecraftInputProps> = ({
@@ -29,6 +30,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
   icon,
   label = "Exemple input",
   type = 'text',
+  options = [],
   name = label,
   isRequired = false,
 }) => {
@@ -43,19 +45,39 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
         </div>
       )}
       <label htmlFor={label} className="text-white minecraftText self-start">{label}</label>
-      <input
-        id={label}
-        type={type}
-        className={`${baseClasses} ${className} ${icon ? 'pl-10' : ''}`}
-        placeholder={placeholder}
-        aria-label={`${placeholder} + ${label}`}
-        value={value}
-        onChange={onChange}
-        onInput={onInput}
-        disabled={disabled}
-        name = {name}
-        required = {isRequired}
-      />
+      {type === 'select' ? (
+        <select
+          id={label}
+          className={`${baseClasses} ${className} ${icon ? 'pl-10' : ''}`}
+          aria-label={`${placeholder} + ${label}`}
+          value={value}
+          onChange={onChange}
+          onInput={onInput}
+          disabled={disabled}
+          name={name}
+          required={isRequired}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : (
+        <input
+          id={label}
+          type={type}
+          className={`${baseClasses} ${className} ${icon ? 'pl-10' : ''}`}
+          placeholder={placeholder}
+          aria-label={`${placeholder} + ${label}`}
+          value={value}
+          onChange={onChange}
+          onInput={onInput}
+          disabled={disabled}
+          name={name}
+          required={isRequired}
+        />
+      )}
     </>
   );
 };

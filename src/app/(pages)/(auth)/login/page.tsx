@@ -4,6 +4,7 @@ import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify';
+import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 
 
 const LoginPage = () => {
@@ -43,6 +44,7 @@ const LoginPage = () => {
     <div className="flex items-center w-full lg:w-full md:w-full sm:w-full justify-center my-8">
       <Card title="Connexion" className='lg:w-1/2 w-full'>
         <Form formFields={formFields} onSubmit={handleSubmit} />
+        <MinecraftButton onClick={() => router.push('/passwordreset')} className='mt-4'></MinecraftButton>
       </Card>
     </div>
   );
