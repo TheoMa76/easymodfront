@@ -85,8 +85,13 @@ const UserShow = () => {
   const handleSubmit = async (values: any) => {
     if (id) {
         const token = Cookies.get('token');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      if (!apiUrl) {
+        return toast.error('API URL non configurée');
+      }
       try {
-        const response = await fetch(`http://localhost:8000/admin/user/${id}/update`, {
+        const response = await fetch(`${apiUrl}/admin/user/${id}/update`, {
           method: 'PUT', 
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify(values),

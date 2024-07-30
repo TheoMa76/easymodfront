@@ -11,7 +11,7 @@ const LoginPage = () => {
   const router = useRouter();
 
   const formFields = [
-    { name: 'username', label: 'Email', placeholder: 'E-mail', type: 'text' },
+    { name: 'username', label: 'Nom d\'utilisateur', placeholder: 'Nom d\'utilisateur', type: 'text' },
     { name: 'password', label: 'Mot de passe', placeholder: 'Mot de passe', type: 'password' },
   ];
 
@@ -29,7 +29,7 @@ const LoginPage = () => {
         const data = await response.json();
         const token = data.token;
         Cookies.set('token', token);
-        router.push('/dashboard');
+        router.push('/dashboard/profil');
         toast.success('Connexion réussie');
       } else {
         const errorData = await response.json();
@@ -44,7 +44,7 @@ const LoginPage = () => {
     <div className="flex items-center w-full lg:w-full md:w-full sm:w-full justify-center my-8">
       <Card title="Connexion" className='lg:w-1/2 w-full'>
         <Form formFields={formFields} onSubmit={handleSubmit} />
-        <MinecraftButton onClick={() => router.push('/passwordreset')} className='mt-4'></MinecraftButton>
+        <MinecraftButton label="Mot de passe oublié" onClick={() => router.push('/passwordreset')} className='mb-4'></MinecraftButton>
       </Card>
     </div>
   );

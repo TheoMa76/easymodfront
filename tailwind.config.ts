@@ -37,6 +37,8 @@ const config: Config = {
         'custom-white': '#EDF2F4',
         'custom-dark': '#2B2D42',
         'custom-secondary': '#D90429',
+        'custom-green': '#55FF55',
+        'custom-red': '#D43C2C',
       },
       ringColor: {
         'custom-secondary': '#D90429',

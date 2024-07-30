@@ -7,13 +7,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
   }
   try {
-    const token = req.cookies.get('token')?.value;
+    const token = req.cookies.get('token')?.value;    
 
     if (!token) {
       return NextResponse.json({ message: 'No token found' }, { status: 401 });
     }
 
-    const response = await fetch(`${apiUrl}/user/`, {
+    const response = await fetch(`${apiUrl}/user/progress`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     });

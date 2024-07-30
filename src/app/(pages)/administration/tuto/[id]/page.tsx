@@ -5,8 +5,8 @@ import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Form from '@/components/molecules/Forms/Form';
-import Card from '@/components/molecules/Card/Card';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 interface Tutoriel {
   id: number;
@@ -97,7 +97,12 @@ const TutoPage: React.FC = () => {
 
     try {
       const token = Cookies.get('token');
-      const response = await fetch(`http://localhost:8000/admin/tuto/${id}/update`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+      if (!apiUrl) {
+        return toast.error('Erreur du developpeur: URL de l\'API non configurée');
+      }
+      const response = await fetch(`${apiUrl}/admin/tuto/${id}/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(updatedTutoriel),

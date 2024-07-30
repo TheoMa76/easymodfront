@@ -7,8 +7,13 @@ interface Id{
 
 export async function GET(request: NextRequest,{params}: {params: Id}) {
     const token = (request.headers.get('cookie'))?.split('=')[1];
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
   try {
-    const response = await fetch(`http://localhost:8000/admin/user/${params.id}`, {
+    const response = await fetch(`${apiUrl}/admin/user/${params.id}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
     });
@@ -28,9 +33,14 @@ export async function GET(request: NextRequest,{params}: {params: Id}) {
 }
 
   export async function DELETE(request: NextRequest,{params}: {params: Id}) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
     const token = (request.headers.get('cookie'))?.split('=')[1];
   try {
-    const response = await fetch(`http://localhost:8000/admin/user/${params.id}/delete`, {
+    const response = await fetch(`${apiUrl}/admin/user/${params.id}/delete`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
     });

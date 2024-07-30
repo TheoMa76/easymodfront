@@ -2,10 +2,15 @@ import { NextResponse } from 'next/server';
 import Cookies from 'js-cookie';
 
 export async function GET() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
   try {
     const token = Cookies.get('token');
 
-    const response = await fetch('http://localhost:8000/tuto/', {
+    const response = await fetch(`${apiUrl}/tuto/`, {
       method: 'GET'
     });
 

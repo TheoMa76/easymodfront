@@ -4,10 +4,14 @@ import https from 'https';
 
 export async function POST(request: Request) {
   const token = (request.headers.get('cookie'))?.split('=')[1];
-  console.log(request.body);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
 
   try {
-    const response = await fetch('http://localhost:8000/admin/create/user', {
+    const response = await fetch(`${apiUrl}/admin/create/user`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(request.body),

@@ -4,9 +4,14 @@ import https from 'https';
 
 export async function GET(request: Request) {
   const token = (request.headers.get('cookie'))?.split('=')[1];
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
 
   try {
-    const response = await fetch('http://localhost:8000/admin/user', {
+    const response = await fetch(`${apiUrl}/admin/user`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     });

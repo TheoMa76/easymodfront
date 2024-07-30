@@ -4,10 +4,15 @@ import { NextResponse } from 'next/server';
 import https from 'https';
 
 export async function POST(request: Request) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+  }
   try {
     const { email, password } = await request.json();
 
-    const response = await fetch('http://localhost:8000/api/register', {
+    const response = await fetch(`${apiUrl}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
