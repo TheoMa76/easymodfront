@@ -74,9 +74,10 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
   
   if (!token) {
     return 404;
+  }else{
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    const isYourself = decodedToken.username === user.username;
   }
-  const decodedToken = JSON.parse(atob(token.split('.')[1]));
-  const isYourself = decodedToken.username === user.username;
 
   return (
     <>
@@ -114,12 +115,18 @@ const AdminUserPage: React.FC = () => {
     } else {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        Cookies.remove('token');        
         router.push('/login');
       }
     }
 
-    const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    const roles = decodedToken.roles || [];
+    let roles = [];
+    if(Cookies.get('token') != undefined && Cookies.get('token') != null){
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      roles = decodedToken.roles || [];
+    }else{
+      roles = [];
+    }
 
     if (!roles.includes('ROLE_ADMIN')) {
       router.push('/login');

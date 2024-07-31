@@ -4,8 +4,6 @@ import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import TextChat from '@/components/atoms/Texts/TextBlock/TextChat';
 import Card from '@/components/molecules/Card/Card';
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import {jwtDecode} from 'jwt-decode';
 
 
 

@@ -88,7 +88,8 @@ const DoTutoPage: React.FC = () => {
     } else {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
-        router.push('/login');
+Cookies.remove('token');        
+router.push('/login');
       }
     }
      if (id) {
