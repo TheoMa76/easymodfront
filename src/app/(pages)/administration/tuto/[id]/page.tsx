@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams,useRouter } from 'next/navigation';
 import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Form from '@/components/molecules/Forms/Form';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import {jwtDecode} from 'jwt-decode';
 
 interface Tutoriel {
   id: number;
@@ -64,9 +65,19 @@ const TutoPage: React.FC = () => {
   const [tutoriel, setTutoriel] = useState<Tutoriel | null>(null);
   const [formValues, setFormValues] = useState<any>({});
   const searchParams = useSearchParams();
+  const router = useRouter();
   const id = searchParams.get('id') ? parseInt(searchParams.get('id') as string) : null;
 
   useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        router.push('/login');
+      }
+    }
     if (id) {
       const loadTutoriel = async () => {
         const data = await fetchTutoriel(id);

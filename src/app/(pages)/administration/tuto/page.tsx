@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
 import TextChat from '@/components/atoms/Texts/TextBlock/TextChat';
 import Card from '@/components/molecules/Card/Card';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 interface Tutoriel {
   id: number;
@@ -99,8 +100,18 @@ const TutorielCard: React.FC<{ tutoriel: Tutoriel }> = ({ tutoriel }) => (
 
 const AdminTutoPage: React.FC = () => {
   const [tutoriels, setTutoriels] = useState<Tutoriel[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        router.push('/login');
+      }
+    }
     const loadTutoriels = async () => {
       const data = await fetchTutoriels();
       setTutoriels(data);

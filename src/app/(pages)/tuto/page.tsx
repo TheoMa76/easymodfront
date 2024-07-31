@@ -39,7 +39,6 @@ const TutoPage: React.FC = () => {
   useEffect(() => {
     const loadTutoriels = async () => {
       const data = await fetchTutoriels();
-      console.log(data);
       setTutoriels(data);
     };
 
@@ -70,7 +69,7 @@ const TutoPage: React.FC = () => {
                   <MinecraftButton
                     label="Retour"
                     onClick={() => setHoveredTuto(null)}
-                    className='mb-4 px-4 py-2 bg-gray-800 rounded'
+                    className='mb-4 px-4 py-2 bg-gray-800'
                   />
                 </div>
               </div>

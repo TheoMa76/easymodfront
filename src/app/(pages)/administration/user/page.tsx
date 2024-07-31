@@ -9,6 +9,7 @@ import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: number;
@@ -108,10 +109,13 @@ const AdminUserPage: React.FC = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-
     if (!token) {
       router.push('/login');
-      return;
+    } else {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        router.push('/login');
+      }
     }
 
     const decodedToken = JSON.parse(atob(token.split('.')[1]));

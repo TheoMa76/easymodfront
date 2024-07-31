@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Form from '@/components/molecules/Forms/Form';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: number;
@@ -64,8 +65,18 @@ const UserShow = () => {
   const [user, setUser] = useState<User | null>(null);
   const searchParams = useSearchParams();
   const id = searchParams.get('id') ? parseInt(searchParams.get('id') as string) : null;
+  const router = useRouter();
 
   useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        router.push('/login');
+      }
+    }
     if (id) {
       const loadUser = async () => {
         const data = await fetchUser(id);

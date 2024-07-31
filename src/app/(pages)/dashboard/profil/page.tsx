@@ -8,6 +8,8 @@ import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
 import MinecraftText from '@/components/atoms/Texts/TextBlock/MinecraftText';
 import Card from '@/components/molecules/Card/Card';
 import Form from '@/components/molecules/Forms/Form';
+import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 async function getConnectedUser() {
   const token = Cookies.get('token');
@@ -97,9 +99,19 @@ const formFields = [
 const Profil = () => {
   const [userData, setUserData] = useState<{ [key: string]: string } | null>(null);
   const [progress, setProgress] = useState<any>(null);
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token) {
+      router.push('/login');
+    } else {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+        router.push('/login');
+      }
+    }
     const fetchUserData = async () => {
       const user = await getConnectedUser();
       if (user) {

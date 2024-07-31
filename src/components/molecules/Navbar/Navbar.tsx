@@ -53,7 +53,6 @@ const Navbar: React.FC = () => {
               { label: 'Se déconnecter', additionalOnClick: handleLogout }
             ]
           },
-          { label: 'Tutoriels', route: '/tuto', onClick: handleMenuClose },
           ...(isAdmin ? [{ label: 'Administration', buttons: [
             { label: 'Utilisateurs', route: '/administration/user', additionalOnClick: handleMenuClose },
             { label: 'Tutoriels', route: '/administration/tuto', additionalOnClick: handleMenuClose }
@@ -69,6 +68,7 @@ const Navbar: React.FC = () => {
           }
         ]
     ),
+    { label: 'Tutoriels', route: '/tuto', onClick: handleMenuClose },
     { label: 'Retour', onClick: handleMenuClose }
   ];
 
