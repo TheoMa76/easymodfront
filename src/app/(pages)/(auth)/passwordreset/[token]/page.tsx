@@ -1,46 +1,46 @@
 "use client";
-import Form from '@/components/molecules/Forms/Form'
-import React from 'react'
-import Cookies from 'js-cookie'
-import { toast } from 'react-toastify'
-import { redirect, useRouter, useSearchParams } from 'next/navigation';
+import Form from '@/components/molecules/Forms/Form';
+import React from 'react';
+import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 
 type Props = {}
 
-const resetPasswordPage = (props: Props) => {
+const ResetPasswordPage = (props: Props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
     console.log(token);
     
-
     async function handleSubmit(values: { [key: string]: string }) {
-        const { password,confirmPassword } = values;
-        if(Cookies && Cookies.get('token')) {
+        const { password, confirmPassword } = values;
+        if (Cookies && Cookies.get('token')) {
             toast.error('Vous êtes déjà connecté.');
-            redirect('/dashboard/profil');
+            router.push('/dashboard/profil'); // Remplacement de redirect par router.push
             return;
         }
         try {
             const response = await fetch(`/api/resetpassword/${token}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json'},
-                body: JSON.stringify({ password,confirmPassword }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, confirmPassword }),
             });
             if (response.ok) {
                 const data = await response.json();
-                toast.success('Votre mot de passe à bien été modifié :', data);
+                toast.success('Votre mot de passe a bien été modifié.', data);
             } else {
                 const errorData = await response.json();
-               toast.error('Une erreur est survenu :', errorData);
+                toast.error('Une erreur est survenue :', errorData);
             }
-        } catch (error:any) {
+        } catch (error: any) {
             toast.error('Network error:', error);
         }
     }
-    const formfields = [
+
+    const formFields = [
         {
             name: 'password',
             label: 'Mot de passe',
@@ -57,14 +57,14 @@ const resetPasswordPage = (props: Props) => {
         },
     ];
 
-  return (
-    <div className='flex flex-col justify-center items-center m-auto w-full'>
-        <Card title="Réinitialisation du mot de passe." className='lg:w-1/2 w-full mt-8 p-4'>
-            <Form formFields={formfields} onSubmit={handleSubmit}></Form>
-            <MinecraftButton label="Retour" onClick={() => router.push('/')} className='mb-4'></MinecraftButton>
-        </Card>
-    </div>
-  )
+    return (
+        <div className='flex flex-col justify-center items-center m-auto w-full'>
+            <Card title="Réinitialisation du mot de passe." className='lg:w-1/2 w-full mt-8 p-4'>
+                <Form formFields={formFields} onSubmit={handleSubmit}></Form>
+                <MinecraftButton label="Retour" onClick={() => router.push('/')} className='mb-4'></MinecraftButton>
+            </Card>
+        </div>
+    );
 }
 
-export default resetPasswordPage
+export default ResetPasswordPage;
