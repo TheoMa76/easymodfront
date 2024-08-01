@@ -4,7 +4,7 @@ import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import { toast } from 'react-toastify';
 
 interface FormValues {
-  [key: string]: string;
+  [key: string]: any;
 }
 
 interface FormErrors {
@@ -24,6 +24,7 @@ interface FormProps {
   onSubmit: (values: FormValues) => void;
   initialValues?: FormValues;
   putSubmit?: boolean;
+  onChange?: (values: FormValues) => void;
 }
 
 const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},putSubmit = true }) => {

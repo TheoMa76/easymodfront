@@ -208,7 +208,7 @@ const Profil = () => {
           <>
             <MinecraftText>Email : {userData.email}</MinecraftText>
             <MinecraftText>Nom d&apos;utilisateur : {userData.username}</MinecraftText>
-            <MinecraftText>Rôle : {formatRoles(userData.roles)}</MinecraftText>
+            <MinecraftText>Rôle : {formatRoles(userData.roles as unknown as Role[])}</MinecraftText>
           </>
         )}
 
@@ -242,7 +242,7 @@ const Profil = () => {
               <Card title={`Tutoriel : ${tutorial.title} ${tutorial.percentage}%`} className='text-xl lg:w-1/2 mb-2' bg="bg-stone">
                 <MinecraftText>{tutorial.completedChapters}/{tutorial.totalChapters} chapitres finis ({tutorial.percentage}%)</MinecraftText>
                 <div className='pl-4'>
-                  {tutorial.chapters.map((chapter) => (
+                  {tutorial.chapters.map((chapter: any) => (
                     <MinecraftText
                       key={chapter.id}
                       className={`ml-2 ${chapter.isCompleted ? 'text-custom-green' : 'text-white'}`}

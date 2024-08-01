@@ -166,7 +166,7 @@ router.push('/login');
 
   return (
     <div className='flex flex-col justify-center items-center w-full' id="formTuto">
-      <Form formFields={formTutoFields} onChange={(values:any) => handleInputChange('tuto', values)} initialValues={initialTutoValues} putSubmit={false} />
+      <Form formFields={formTutoFields} onSubmit={handleSubmit} onChange={(values:any) => handleInputChange('tuto', values)} initialValues={initialTutoValues} putSubmit={false} />
       {tutoriel.chapters && tutoriel.chapters.map((chapter, chapterIndex) => {
         const initialChapterValues = {
           chapter_title: chapter.title,
@@ -176,7 +176,9 @@ router.push('/login');
         return (
           <div key={chapterIndex}>
             <MinecraftHN as='h2' className="text-3xl">{chapter.position} : {chapter.title}</MinecraftHN>
-            <Form onChange={(values) => handleInputChange(`chapter_${chapterIndex}`, values)} formFields={formChapterFields} initialValues={initialChapterValues} putSubmit={false} />
+            <Form onChange={(values) => handleInputChange(`chapter_${chapterIndex}`, values)} formFields={formChapterFields} initialValues={initialChapterValues} putSubmit={false} onSubmit={function (values: any): void {
+              throw new Error('Function not implemented.');
+            } } />
             {chapter.contents && chapter.contents.map((content, contentIndex) => {
               const initialContentValues = {
                 content_text: content.text,
@@ -188,7 +190,9 @@ router.push('/login');
               return (
                 <div key={contentIndex}>
                   <MinecraftHN as='h2' className="text-2xl">Contenu {content.position} du chapitre : {chapter.title}</MinecraftHN>
-                  <Form onChange={(values:any) => handleInputChange(`content_${chapterIndex}_${contentIndex}`, values)} formFields={formContentFields} initialValues={initialContentValues} putSubmit={false} />
+                  <Form onChange={(values: any) => handleInputChange(`content_${chapterIndex}_${contentIndex}`, values)} formFields={formContentFields} initialValues={initialContentValues} putSubmit={false} onSubmit={function (values: any): void {
+                    throw new Error('Function not implemented.');
+                  } } />
                 </div>
               );
             })}
