@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, FormEventHandler } from 'react';
 
 type MinecraftInputVariant = 'primary' | 'secondary' | 'neutral';
 
@@ -7,8 +7,8 @@ interface MinecraftInputProps {
   variant?: MinecraftInputVariant;
   placeholder?: string;
   value?: string;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onInput?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: ChangeEventHandler<HTMLSelectElement | HTMLInputElement>;
+  onInput?: (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void; // More generic event handler
   disabled?: boolean;
   className?: string;
   name?: string;
@@ -28,7 +28,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
   disabled = false,
   className = '',
   icon,
-  label = "Exemple input",
+  label = "Example input",
   type = 'text',
   options = [],
   name = label,
@@ -52,7 +52,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
           aria-label={`${placeholder} + ${label}`}
           value={value}
           onChange={onChange}
-          onInput={onInput}
+          onInput={onInput as FormEventHandler<HTMLSelectElement>} // Type casting for select
           disabled={disabled}
           name={name}
           required={isRequired}
@@ -72,7 +72,7 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
           aria-label={`${placeholder} + ${label}`}
           value={value}
           onChange={onChange}
-          onInput={onInput}
+          onInput={onInput as FormEventHandler<HTMLInputElement>} // Type casting for input
           disabled={disabled}
           name={name}
           required={isRequired}

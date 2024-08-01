@@ -4,7 +4,12 @@ import AwesomeTitle from '@/components/atoms/Texts/Title/AwesomeTitle';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Menu from '@/components/molecules/Menu/Menu';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode, JwtPayload } from 'jwt-decode';
+
+// Define a custom interface for your token payload
+interface CustomJwtPayload extends JwtPayload {
+  roles: string[]; // Define any additional properties
+}
 
 const Navbar: React.FC = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -15,8 +20,8 @@ const Navbar: React.FC = () => {
     const token = Cookies.get('token');
     if (token) {
       try {
-        const decodedToken = jwtDecode(token);
-        if(decodedToken.roles.includes('ROLE_ADMIN')) {
+        const decodedToken = jwtDecode<CustomJwtPayload>(token);
+        if (decodedToken.roles.includes('ROLE_ADMIN')) {
           setIsAdmin(true);
         }
         setIsAuthenticated(true);
