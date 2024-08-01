@@ -176,7 +176,7 @@ router.push('/login');
         totalChapters,
         completedChapters: completedChaptersCount,
         percentage: percentage.toFixed(2),
-        chapters: idChapters[tutorialId].map(chapterId => ({
+        chapters: idChapters[tutorialId].map((chapterId: number) => ({
           id: chapterId,
           title: chapterTitles[chapterId] || `Chapitre ${chapterId}`,
           isCompleted: progressList.some((p: any) => p.chapter.id === chapterId && p.isCompleted)

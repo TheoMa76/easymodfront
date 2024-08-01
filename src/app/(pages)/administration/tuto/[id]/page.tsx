@@ -87,10 +87,10 @@ router.push('/login');
 
       loadTutoriel();
     }
-  }, [id]);
+  }, [id,router]);
 
   const handleInputChange = (formId: string, values: any) => {
-    setFormValues((prevValues) => ({
+    setFormValues((prevValues:any) => ({
       ...prevValues,
       [formId]: values,
     }));
@@ -166,7 +166,7 @@ router.push('/login');
 
   return (
     <div className='flex flex-col justify-center items-center w-full' id="formTuto">
-      <Form formFields={formTutoFields} onChange={(values) => handleInputChange('tuto', values)} initialValues={initialTutoValues} putSubmit={false} />
+      <Form formFields={formTutoFields} onChange={(values:any) => handleInputChange('tuto', values)} initialValues={initialTutoValues} putSubmit={false} />
       {tutoriel.chapters && tutoriel.chapters.map((chapter, chapterIndex) => {
         const initialChapterValues = {
           chapter_title: chapter.title,
@@ -188,7 +188,7 @@ router.push('/login');
               return (
                 <div key={contentIndex}>
                   <MinecraftHN as='h2' className="text-2xl">Contenu {content.position} du chapitre : {chapter.title}</MinecraftHN>
-                  <Form onChange={(values) => handleInputChange(`content_${chapterIndex}_${contentIndex}`, values)} formFields={formContentFields} initialValues={initialContentValues} putSubmit={false} />
+                  <Form onChange={(values:any) => handleInputChange(`content_${chapterIndex}_${contentIndex}`, values)} formFields={formContentFields} initialValues={initialContentValues} putSubmit={false} />
                 </div>
               );
             })}
