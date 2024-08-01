@@ -56,7 +56,6 @@ const handleDelete = async (id: number) => {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
-    console.log(response);
     if (response.ok) {
       toast.success("Utilisateur supprimé.");
       return window.location.reload();
@@ -71,12 +70,14 @@ const handleDelete = async (id: number) => {
 
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
   const token = Cookies.get('token');
+  const [isYourself, setIsYourself] = useState(false);
+
   
   if (!token) {
     return 404;
   }else{
     const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    const isYourself = decodedToken.username === user.username;
+    setIsYourself(decodedToken.username === user.username);
   }
 
   return (
@@ -121,7 +122,7 @@ const AdminUserPage: React.FC = () => {
     }
 
     let roles = [];
-    if(Cookies.get('token') != undefined && Cookies.get('token') != null){
+    if(token != undefined && token != null){
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       roles = decodedToken.roles || [];
     }else{
