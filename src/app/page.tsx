@@ -44,7 +44,7 @@ const HomePage: React.FC = () => {
             <ul>
               <li className='my-10 text-xl'><MinecraftText size='text-3xl'>Guide Complet et Accessible :</MinecraftText> Nos tutoriels sont élaborés pour tous les âges et tous les niveaux. 
               Que vous soyez un débutant curieux ou un passionné en quête de perfectionnement, nous avons les 
-              ressources qu'il vous faut pour maîtriser l'art de la création de mods.</li>
+              ressources qu&apos;il vous faut pour maîtriser l&apos;art de la création de mods.</li>
               
               <li className='my-10 text-xl'><MinecraftText size='text-3xl'>De l&apos;Installation à l&apos;Action :</MinecraftText> Nous vous guidons à travers tout le processus, depuis l&apos;installation 
               des outils nécessaires jusqu&apos;à la mise en œuvre et le test de votre mod dans Minecraft. 

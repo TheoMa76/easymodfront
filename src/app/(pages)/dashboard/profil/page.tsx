@@ -109,8 +109,8 @@ const Profil = () => {
     } else {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
-Cookies.remove('token');        
-router.push('/login');
+        Cookies.remove('token');        
+        router.push('/login');
       }
     }
     const fetchUserData = async () => {
@@ -194,7 +194,7 @@ router.push('/login');
           <MinecraftText className='mt-5 w-full'>
             Sur votre profil, vous avez la possibilité 
             de consulter et modifier diverses informations personnelles, 
-            telles que votre adresse email et votre nom d'utilisateur. 
+            telles que votre adresse email et votre nom d&apos;utilisateur. 
             En plus de ces données, vous pouvez suivre votre progression 
             dans les tutoriels, ce qui vous permet de 
             voir où vous en êtes et quels chapitres vous avez déjà complétés.
@@ -207,7 +207,7 @@ router.push('/login');
         ) : (
           <>
             <MinecraftText>Email : {userData.email}</MinecraftText>
-            <MinecraftText>Nom d'utilisateur : {userData.username}</MinecraftText>
+            <MinecraftText>Nom d&apos;utilisateur : {userData.username}</MinecraftText>
             <MinecraftText>Rôle : {formatRoles(userData.roles)}</MinecraftText>
           </>
         )}
