@@ -89,7 +89,7 @@ async function handleSubmit(values: { [key: string]: string }) {
 }
 
 const formFields = [
-  { name: 'username', label: 'Nom d\'utilisateur', placeholder: 'Nom d\'utilisateur', type: 'text' },
+  { name: 'username', label: "Nom d'utilisateur", placeholder: "Nom d'utilisateur", type: 'text' },
   { name: 'email', label: 'Email', placeholder: 'E-mail', type: 'text' },
   { name: 'current_password', label: 'Mot de passe actuel', placeholder: 'Mot de passe actuel', type: 'password' },
   { name: 'password', label: 'Nouveau mot de passe', placeholder: 'Nouveau mot de passe', type: 'password' },
