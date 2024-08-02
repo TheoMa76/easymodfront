@@ -17,10 +17,11 @@ export async function GET(req: NextRequest) {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
     });
-
     if (response.ok) {
       const data = await response.json();
       return NextResponse.json(data, { status: 200 });
+    }else if(response.status === 404){
+      return NextResponse.json({ message: 'Aucune progression trouvee' }, { status: 200 });
     } else {
       const errorData = await response.json();
       return NextResponse.json(errorData, { status: response.status });

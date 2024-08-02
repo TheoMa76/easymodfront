@@ -13,6 +13,7 @@ import { jwtDecode } from 'jwt-decode';
 
 async function getConnectedUser() {
   const token = Cookies.get('token');
+  console.log(token);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
@@ -89,11 +90,11 @@ async function handleSubmit(values: { [key: string]: string }) {
 }
 
 const formFields = [
-  { name: 'username', label: "Nom d'utilisateur", placeholder: "Nom d'utilisateur", type: 'text' },
-  { name: 'email', label: 'Email', placeholder: 'E-mail', type: 'text' },
-  { name: 'current_password', label: 'Mot de passe actuel', placeholder: 'Mot de passe actuel', type: 'password' },
-  { name: 'password', label: 'Nouveau mot de passe', placeholder: 'Nouveau mot de passe', type: 'password' },
-  { name: 'confirm_password', label: 'Confirmez votre nouveau mot de passe', placeholder: 'Confirmez nouveau mot de passe', type: 'password' },
+  { name: 'username', label: "Nom d'utilisateur", placeholder: "Nom d'utilisateur", type: 'text', required: false },
+  { name: 'email', label: 'Email', placeholder: 'E-mail', type: 'text', required: false },
+  { name: 'current_password', label: 'Mot de passe actuel', placeholder: 'Mot de passe actuel', type: 'password', required: false },
+  { name: 'password', label: 'Nouveau mot de passe', placeholder: 'Nouveau mot de passe', type: 'password', required: false },
+  { name: 'confirm_password', label: 'Confirmez votre nouveau mot de passe', placeholder: 'Confirmez nouveau mot de passe', type: 'password', required: false },
 ];
 
 const Profil = () => {
@@ -123,8 +124,10 @@ const Profil = () => {
 
     const fetchProgress = async () => {
       const progress = await getProgress();
-      if (progress) {
+      if (progress && progress.length > 0) {
         setProgress(progress);
+      }else{
+        setProgress("Vous n&apos;avez pas encore fais de tutoriel.");
       }
     };
     fetchProgress();
@@ -215,7 +218,7 @@ const Profil = () => {
   
   return (
     <div className='flex flex-col items-start gap-10 lg:mx-10'>
-      <Card title="Voici votre profil" className=' w-full lg:w-10/12 mt-8 -z-10' bg="bg-deepslate">
+      <Card title="Voici votre profil" className=' w-full lg:w-10/12 mt-8' bg="bg-deepslate">
         <div className='w-full lg:w-1/2 lg:m-auto self-center my-10'>
           <MinecraftText className='mt-5 w-full'>
             Sur votre profil, vous avez la possibilite 
@@ -227,7 +230,7 @@ const Profil = () => {
           </MinecraftText>
         </div>
       </Card>
-      <Card title='Votre compte' className='lg:w-10/12 mt-8 w-full -z-10'>
+      <Card title='Votre compte' className='lg:w-10/12 mt-8 w-full'>
         {userData === null ? (
           <MinecraftHN as="h2">Chargement...</MinecraftHN>
         ) : (
@@ -244,7 +247,7 @@ const Profil = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Modifier le profil"
-          className="fixed inset-0 flex items-center z-infinite justify-center bg-gray-800 bg-opacity-75"
+          className="fixed inset-0 flex items-center z-50 justify-center bg-gray-800 bg-opacity-75"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
           <Card title="Editer votre profil." className='w-full'>
@@ -260,10 +263,10 @@ const Profil = () => {
           </Card>
         </Modal>
       </Card>
-      <Card title="Votre progression" className='lg:w-10/12 mt-8 w-full -z-10'>
+      <Card title="Votre progression" className='lg:w-10/12 mt-8 w-full'>
         {progress === null ? (
           <MinecraftHN as="h2">Chargement...</MinecraftHN>
-        ) : (
+        ) : Array.isArray(progress) && progress.length > 0 ? (
           calculateTutorialProgress().map((tutorial) => (
             <div key={tutorial.id} className='mb-6 w-full'>
               <Card title={`Tutoriel : ${tutorial.title} ${tutorial.percentage}%`} className='text-xl lg:w-1/2 mb-2' bg="bg-stone">
@@ -281,8 +284,10 @@ const Profil = () => {
               </Card>
             </div>
           ))
+        ) : (
+          <MinecraftText>Vous n&apos;avez pas encore fais de tutoriel.</MinecraftText>
         )}
-      </Card>
+</Card>
     </div>
   );
 };
