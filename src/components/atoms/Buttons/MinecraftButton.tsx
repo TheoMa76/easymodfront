@@ -13,10 +13,11 @@ interface ButtonProps {
   label?: string;
   icon?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
+  sound?: string;
 }
 
-const playClickSound = () => {
-  const audio = new Audio('/sound/minecraft-menu-button.mp3');
+const playClickSound = (sound:string) => {
+  const audio = new Audio(`/sound/${sound}`);
   if (audio) {
     audio.currentTime = 0;
     audio.play().catch((error) => {
@@ -36,6 +37,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
   label = '',
   icon,
   type = 'button',
+  sound = 'minecraft-menu-button.mp3',
 }) => {
   const baseClasses = 'MinecraftButton bg-minecraft-button border border-solid border-2 border-black relative py-2 px-4 tracking-wide text-xl text-white';
   const hoverClasses = 'hover:scale-105 hover:bg-minecraft-hover';
@@ -51,7 +53,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
       <button
         className={`${baseClasses} ${hoverClasses} ${beforeClasses} ${className} flex flex-row items-center`}
         onClick={() => {
-          playClickSound();
+          playClickSound(sound);
           if (onClick) onClick();
         }}
         disabled={disabled}

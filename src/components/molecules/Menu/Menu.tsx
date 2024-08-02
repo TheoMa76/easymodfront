@@ -16,6 +16,7 @@ interface MenuButton {
   route?: string;
   onClick?: () => void;
   buttons?: SubButton[];
+  sound?: string;
 }
 
 interface MenuProps {
@@ -74,6 +75,7 @@ const Menu: React.FC<MenuProps> = ({ buttons }) => {
                 label={button.label}
                 onClick={() => handleButtonClick(button)}
                 className="w-full mb-4"
+                sound={button.sound}
               />
             ))
           )}

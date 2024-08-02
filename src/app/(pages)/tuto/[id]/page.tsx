@@ -9,7 +9,6 @@ import { toast } from 'react-toastify';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import TextChat from '@/components/atoms/Texts/TextBlock/TextChat';
 import { jwtDecode } from 'jwt-decode';
-import { log } from 'console';
 
 interface Tutoriel {
   id: number;
@@ -55,7 +54,6 @@ const fetchTutoriel = async (id: number): Promise<Tutoriel | null> => {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       if (data && typeof data.tuto === 'object') {
         const sortedTutoriel = sortTutoriel(data.tuto);
         return sortedTutoriel;
@@ -115,6 +113,12 @@ router.push('/login');
     }
   };
 
+  const extractYouTubeID = (url:string) => {
+    const regExp = /^.*(youtu.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
   const handlePrevChapter = () => {
     if (currentChapterIndex > 0) {
       setCurrentChapterIndex(currentChapterIndex - 1);
@@ -125,16 +129,27 @@ router.push('/login');
 
   return (
     <div className='flex flex-col justify-center items-center w-full'>
-      <Card title={tuto.title} bg="bg-obsi" className='lg:w-10/12 w-full my-8'>
-        <div key={currentChapter.position} title={currentChapter.title} className='lg:w-10/12 w-full my-8'>
-          <MinecraftText>{currentChapter.description}</MinecraftText>
+      <Card title={`Tutoriel ${tuto.position} : ${tuto.title}`} bg="bg-obsi" className='lg:w-10/12 w-full my-8 font-semibold'>
+        <div key={currentChapter.position} title={currentChapter.title} className='lg:w-10/12 w-full my-8 text-center'>
+          <MinecraftHN as='h2' className=''>{currentChapter.title}</MinecraftHN>
+          <MinecraftText className='font-medium'>{currentChapter.description}</MinecraftText>
           {currentChapter.contents.map(content => (
             <div key={content.id} className='my-16 w-full'>
-              {content.text && <Card bg="bg-stone" className='my-5'><MinecraftText className='my-3 mx-5'>{content.text}</MinecraftText></Card>}
-              {content.code && <Card bg="bg-deepslate" className='my-5'><TextChat>{content.code}</TextChat></Card>}
-              {content.image && <Card bg="bg-dirt" className='my-5'><img src={content.image} alt="Image" /></Card>}
-              {content.video && <Card bg="bg-glowstone" className='my-5'><video src={content.video} controls /></Card>}
-            </div>
+              {content.text && <Card bg="bg-stone" className='my-5 font-thin'><MinecraftText className='my-3 mx-5'>{content.text}</MinecraftText></Card>}
+              {content.code && <Card bg="bg-deepslate" className='my-5 font-thin text-left'><TextChat>{content.code}</TextChat></Card>}
+              {content.image && <Card bg="bg-dirt" className='my-5 font-thin'><img src={content.image} alt="Image" /></Card>}
+              {content.video && 
+                              <Card bg="bg-glowstone" className='my-5 w-full h-fit font-thin p-5'>
+                                <iframe 
+                                  width="100%"
+                                  height="auto"
+                                  src={`https://www.youtube.com/embed/${extractYouTubeID(content.video)}`} 
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                  allowFullScreen 
+                                  style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+                                ></iframe>
+                              </Card>
+}            </div>
           ))}
         </div>
         <MinecraftButton
