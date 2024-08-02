@@ -28,7 +28,7 @@ const TextChat: React.FC<Props> = ({ children, className }) => {
     if (preRef.current) {
       const text = preRef.current.textContent || '';
       navigator.clipboard.writeText(text).then(() => {
-        toast.info('Code copié !');
+        toast.info('Code copie !');
       }).catch(err => {
         toast.error('Failed to copy text: ', err);
       });

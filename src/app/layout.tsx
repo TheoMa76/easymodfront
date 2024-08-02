@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/molecules/Navbar";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CookieBanner from "@/components/atoms/CookieBanner/CookieBanner";
+import Footer from "@/components/atoms/Footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,8 @@ export default function RootLayout({
           
         </div>
         {children}
+        <CookieBanner />
+        <Footer />
       </body>
     </html>
   );

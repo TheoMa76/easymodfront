@@ -30,13 +30,13 @@ const LoginPage = () => {
         const token = data.token;
         Cookies.set('token', token);
         router.push('/dashboard/profil');
-        toast.success('Connexion réussie');
+        toast.success('Connexion reussie');
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);
       }
     } catch (error) {
-      console.error('Erreur réseau:', error);
+      console.error('Erreur reseau:', error);
     }
   }
 
@@ -44,7 +44,7 @@ const LoginPage = () => {
     <div className="flex items-center w-full lg:w-full md:w-full sm:w-full justify-center my-8">
       <Card title="Connexion" className='lg:w-1/2 w-full'>
         <Form formFields={formFields} onSubmit={handleSubmit} />
-        <MinecraftButton label="Mot de passe oublié" onClick={() => router.push('/passwordreset')} className='mb-4'></MinecraftButton>
+        <MinecraftButton label="Mot de passe oublie" onClick={() => router.push('/passwordreset')} className='mb-4'></MinecraftButton>
       </Card>
     </div>
   );

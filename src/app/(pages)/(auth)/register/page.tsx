@@ -25,7 +25,7 @@ const RegisterPage = () => {
       });      
 
       if (response.ok) {
-        toast.success('Inscription réussie ! Connexion en cours...');
+        toast.success('Inscription reussie ! Connexion en cours...');
         const username = email;
         const loginresp = await fetch('/api/login', {
           method: 'POST',
@@ -37,14 +37,14 @@ const RegisterPage = () => {
           const token = logindata.token;
           Cookies.set('token', token);
           router.push('/dashboard');
-          toast.success('Connexion réussie');
+          toast.success('Connexion reussie');
         }
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);
       }
     } catch (error) {
-      console.error('Erreur réseau:', error);
+      console.error('Erreur reseau:', error);
     }
   }
 

@@ -8,9 +8,10 @@ interface TutoCardProps {
   id: number;
   title: string;
   estimated_time: string;
+  imageUrl: string;
 }
 
-const TutoCard: React.FC<TutoCardProps> = ({ id, title, estimated_time }) => {
+const TutoCard: React.FC<TutoCardProps> = ({ id, title, estimated_time, imageUrl }) => {
   const router = useRouter();
   const [isConnected, setIsConnected] = useState(false);
 
@@ -20,12 +21,16 @@ const TutoCard: React.FC<TutoCardProps> = ({ id, title, estimated_time }) => {
     }
   }, []);
 
+  // Determine la classe de fond en fonction de l'image
+  const backgroundClass = imageUrl ? '' : 'bg-stone';
+  const backgroundImageStyle = imageUrl ? { backgroundImage: `url(${imageUrl})` } : {};
+
   return (
     <div
-      className="bg-minecraft-card border-2 w-full h-full lg:w-1/4 lg:h-1/6 border-black relative cursor-pointer flex flex-col items-center justify-between rounded-lg shadow-lg transition-transform transform hover:scale-105"
+      className={`border-2 w-full bg-cover bg-center bg-no-repeat h-full lg:w-1/4 lg:h-1/6 border-black relative cursor-pointer flex flex-col items-center justify-between shadow-lg transition-transform transform hover:scale-105 ${backgroundClass}`}
+      style={backgroundImageStyle}
     >
-      <div className="before:bg-stone before:absolute before:top-0 before:left-0 before:w-full before:h-full before:border-4 before:border-solid before:border-custom-white before:border-b-4 before:border-b-solid before:border-b-custom-dark-grey before:border-r-0 before:pointer-events-none before:bg-cover before:bg-center before:opacity-100 before:transition-all before:z-30"></div>
-      <div className="relative flex flex-col items-center justify-center z-40 p-4">
+      <div className="relative flex flex-col items-center justify-center z-20 p-4 text-white">
         <MinecraftHN as='h2' className="text-xl text-center">{title}</MinecraftHN>
         <MinecraftHN as='h3' className="text-sm text-center">Temps : {estimated_time}</MinecraftHN>
         <MinecraftButton

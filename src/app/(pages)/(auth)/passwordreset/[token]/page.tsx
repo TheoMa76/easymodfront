@@ -18,7 +18,7 @@ const ResetPasswordPage = (props: Props) => {
     async function handleSubmit(values: { [key: string]: string }) {
         const { password, confirmPassword } = values;
         if (Cookies && Cookies.get('token')) {
-            toast.error('Vous êtes déjà connecté.');
+            toast.error('Vous êtes dejà connecte.');
             router.push('/dashboard/profil'); // Remplacement de redirect par router.push
             return;
         }
@@ -30,7 +30,7 @@ const ResetPasswordPage = (props: Props) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                toast.success('Votre mot de passe a bien été modifié.', data);
+                toast.success('Votre mot de passe a bien ete modifie.', data);
             } else {
                 const errorData = await response.json();
                 toast.error('Une erreur est survenue :', errorData);
@@ -59,7 +59,7 @@ const ResetPasswordPage = (props: Props) => {
 
     return (
         <div className='flex flex-col justify-center items-center m-auto w-full'>
-            <Card title="Réinitialisation du mot de passe." className='lg:w-1/2 w-full mt-8 p-4'>
+            <Card title="Reinitialisation du mot de passe." className='lg:w-1/2 w-full mt-8 p-4'>
                 <Form formFields={formFields} onSubmit={handleSubmit}></Form>
                 <MinecraftButton label="Retour" onClick={() => router.push('/')} className='mb-4'></MinecraftButton>
             </Card>

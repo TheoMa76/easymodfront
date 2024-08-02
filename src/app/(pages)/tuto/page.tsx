@@ -10,6 +10,8 @@ interface Tutoriel {
   estimated_time: string;
   game: string;
   position: number;
+  imageUrl: string;
+  image:string;
 }
 
 const fetchTutoriels = async (): Promise<Tutoriel[]> => {
@@ -27,7 +29,7 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
       return [];
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
     return [];
   }
 };
@@ -44,7 +46,6 @@ const TutoPage: React.FC = () => {
 
     loadTutoriels();
   }, []);
-
   return (
     <div className='w-full flex mt-5 flex-col justify-start px-3'>
       <div className='bg-black bg-opacity-50'>
@@ -59,6 +60,7 @@ const TutoPage: React.FC = () => {
               id={tuto.id}
               title={tuto.title}
               estimated_time={tuto.estimated_time}
+              imageUrl={tuto.imageUrl}
             />
             {hoveredTuto?.id === tuto.id && (
               <div className='lg:ml-4 lg:text-white lg:relative absolute top-0 left-0 w-full h-full bg-black bg-opacity-75 flex flex-col items-center justify-between text-white p-4 md:hidden overflow-y-auto max-h-[80vh]'>

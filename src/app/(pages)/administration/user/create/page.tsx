@@ -55,7 +55,7 @@ router.push('/login');
 
         if (response.ok) {
           const data = await response.json();
-          toast.success('Utilisateur crée !', data);
+          toast.success('Utilisateur cree !', data);
         } else {
           const errorData = await response.json();
           console.error('Error submitting form:', errorData);

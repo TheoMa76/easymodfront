@@ -26,7 +26,7 @@ const fetchUser = async (id: number): Promise<User | null> => {
       if (data && typeof data.user === 'object') {
         return data.user;
       } else {
-        console.error('Les données de réponse ne sont pas dans le format attendu');
+        console.error('Les donnees de reponse ne sont pas dans le format attendu');
         return null;
       }
     } else {
@@ -35,7 +35,7 @@ const fetchUser = async (id: number): Promise<User | null> => {
       return null;
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
     return null;
   }
 };
@@ -100,7 +100,7 @@ router.push('/login');
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
       if (!apiUrl) {
-        return toast.error('API URL non configurée');
+        return toast.error('API URL non configuree');
       }
       try {
         const response = await fetch(`${apiUrl}/admin/user/${id}/update`, {

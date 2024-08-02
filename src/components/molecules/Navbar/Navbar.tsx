@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
             buttons: [
               { label: 'Profil', route: '/dashboard/profil', additionalOnClick: handleMenuClose },
               { label: 'Progression', route: '/dashboard/progression', additionalOnClick: handleMenuClose },
-              { label: 'Se déconnecter', additionalOnClick: handleLogout }
+              { label: 'Se deconnecter', additionalOnClick: handleLogout }
             ]
           },
           ...(isAdmin ? [{ label: 'Administration', buttons: [
@@ -80,14 +80,14 @@ const Navbar: React.FC = () => {
   return (
     <>
       <div className="relative w-full">
-        <div className="flex flex-wrap flex-col items-center justify-between w-full bg-dirt bg-auto">
-          <div className='w-1/4 m-auto'>
+        <div className="flex flex-wrap sm:flex-col items-center justify-between w-full bg-dirt bg-auto">
+          <div className='sm:w-1/4 sm:m-auto'>
             <AwesomeTitle>Craftez votre mod!</AwesomeTitle>
           </div>
           <MinecraftButton
             label="Menu"
             onClick={toggleMenu}
-            className="self-center mb-3 z-0"
+            className="self-center lg:mb-3 z-0"
           />
         </div>
 

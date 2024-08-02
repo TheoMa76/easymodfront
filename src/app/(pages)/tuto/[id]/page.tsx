@@ -58,7 +58,7 @@ const fetchTutoriel = async (id: number): Promise<Tutoriel | null> => {
         const sortedTutoriel = sortTutoriel(data.tuto);
         return sortedTutoriel;
       } else {
-        console.error('Les données de réponse ne sont pas dans le format attendu');
+        console.error('Les donnees de reponse ne sont pas dans le format attendu');
         return null;
       }
     } else {
@@ -67,7 +67,7 @@ const fetchTutoriel = async (id: number): Promise<Tutoriel | null> => {
       return null;
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
     return null;
   }
 };
@@ -123,7 +123,7 @@ router.push('/login');
     if (currentChapterIndex > 0) {
       setCurrentChapterIndex(currentChapterIndex - 1);
     } else {
-      toast.info('Vous avez atteint le début du tutoriel.');
+      toast.info('Vous avez atteint le debut du tutoriel.');
     }
   };
 

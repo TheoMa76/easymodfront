@@ -17,7 +17,9 @@ const Card: React.FC<Props> = ({ title, children, useAwesometitle = false, class
         !useAwesometitle ? 
           <MinecraftHN as="h2" className="mb-4 w-1/2 lg:w-fit">{title}</MinecraftHN> 
         : 
+          <div className='w-1/3 my-10'>
           <AwesomeTitle className="mb-4">{title}</AwesomeTitle>
+          </div>
       )}
       {children}
     </div>

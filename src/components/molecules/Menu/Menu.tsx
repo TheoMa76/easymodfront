@@ -4,7 +4,7 @@ import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import { useRouter } from 'next/navigation';
 import Card from '@/components/molecules/Card/Card';
 
-// Définir les interfaces pour les boutons et les props
+// Definir les interfaces pour les boutons et les props
 interface SubButton {
   label: string;
   route?: string;

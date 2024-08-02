@@ -9,7 +9,7 @@ export async function GET(request: NextRequest,{params}: {params: Id}) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
-    return NextResponse.json({ message: 'API URL non configurée' }, { status: 500 });
+    return NextResponse.json({ message: 'API URL non configuree' }, { status: 500 });
   }
   try {
     const response = await fetch(`${apiUrl}/tuto/preview/find/${params.id}`, {
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest,{params}: {params: Id}) {
       return NextResponse.json(errorData, { status: response.status });
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
-    return NextResponse.json({ message: 'Erreur réseau'}, { status: 500 });
+    console.error('Erreur reseau:', error);
+    return NextResponse.json({ message: 'Erreur reseau'}, { status: 500 });
   }
 }

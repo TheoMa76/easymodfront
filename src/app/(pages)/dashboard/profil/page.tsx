@@ -16,7 +16,7 @@ async function getConnectedUser() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
-    return toast.error('API URL non configurée');
+    return toast.error('API URL non configuree');
   }
   try {
     const response = await fetch(`${apiUrl}/user/connected`, {
@@ -31,7 +31,7 @@ async function getConnectedUser() {
       return null;
     }
   } catch (error) {
-    toast.error(`Erreur réseau: ${error}`);
+    toast.error(`Erreur reseau: ${error}`);
     return null;
   }
 }
@@ -41,7 +41,7 @@ async function getProgress() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
-    return toast.error('API URL non configurée');
+    return toast.error('API URL non configuree');
   }
   try {
     const response = await fetch(`/api/user/progress`, {
@@ -56,7 +56,7 @@ async function getProgress() {
       return null;
     }
   } catch (error) {
-    toast.error(`Erreur réseau: ${error}`);
+    toast.error(`Erreur reseau: ${error}`);
     return null;
   }
 }
@@ -66,7 +66,7 @@ async function handleSubmit(values: { [key: string]: string }) {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
-    return toast.error('API URL non configurée');
+    return toast.error('API URL non configuree');
   }
 
   try {
@@ -84,7 +84,7 @@ async function handleSubmit(values: { [key: string]: string }) {
       console.log('Erreur de connexion:', errorData);
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
   }
 }
 
@@ -192,12 +192,12 @@ const Profil = () => {
       <Card title="Voici votre profil" className=' w-full lg:w-10/12 mt-8' bg="bg-deepslate">
         <div className='w-full lg:w-1/2 lg:m-auto self-center my-10'>
           <MinecraftText className='mt-5 w-full'>
-            Sur votre profil, vous avez la possibilité 
+            Sur votre profil, vous avez la possibilite 
             de consulter et modifier diverses informations personnelles, 
             telles que votre adresse email et votre nom d&apos;utilisateur. 
-            En plus de ces données, vous pouvez suivre votre progression 
+            En plus de ces donnees, vous pouvez suivre votre progression 
             dans les tutoriels, ce qui vous permet de 
-            voir où vous en êtes et quels chapitres vous avez déjà complétés.
+            voir où vous en êtes et quels chapitres vous avez dejà completes.
           </MinecraftText>
         </div>
       </Card>

@@ -31,7 +31,7 @@ const fetchUsers = async (): Promise<User[]> => {
       if (data && Array.isArray(data.users)) {
         return data.users;
       } else {
-        console.error('Les données de réponse ne sont pas dans le format attendu');
+        console.error('Les donnees de reponse ne sont pas dans le format attendu');
         return [];
       }
     } else {
@@ -40,7 +40,7 @@ const fetchUsers = async (): Promise<User[]> => {
       return [];
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
     return [];
   }
 };
@@ -57,14 +57,14 @@ const handleDelete = async (id: number) => {
       headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-      toast.success("Utilisateur supprimé.");
+      toast.success("Utilisateur supprime.");
       return window.location.reload();
     } else {
       const errorData = await response.json();
       console.error('Erreur de connexion:', errorData);
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
   }
 }
 
@@ -82,7 +82,7 @@ const UserCard: React.FC<{ user: User }> = ({ user }) => {
 
   return (
     <>
-    <MinecraftButton label="Créer un utilisateur" onClick={() => window.location.href = '/administration/user/create'} />
+    <MinecraftButton label="Creer un utilisateur" onClick={() => window.location.href = '/administration/user/create'} />
     <Card className='m-5 w-full' key={user.id}>
       <MinecraftHN as='h2'>{user.username}</MinecraftHN>
       <TextChat className='w-full'>
@@ -149,7 +149,7 @@ const AdminUserPage: React.FC = () => {
             <UserCard key={u.id} user={u} />
           ))
         ) : (
-          <MinecraftText>Aucun utilisateur trouvé.</MinecraftText>
+          <MinecraftText>Aucun utilisateur trouve.</MinecraftText>
         )}
       </div>
   );

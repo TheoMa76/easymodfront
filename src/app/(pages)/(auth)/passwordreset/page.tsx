@@ -15,7 +15,7 @@ const ResetPasswordEmailFormPage = (props: Props) => {
     async function handleSubmit(values: { [key: string]: string }) {
         const { email } = values;
         if (Cookies && Cookies.get('token')) {
-            toast.error('Vous êtes déjà connecté.');
+            toast.error('Vous êtes dejà connecte.');
             router.push('/dashboard/profil'); // Remplacement de redirect par router.push
             return;
         }
@@ -27,7 +27,7 @@ const ResetPasswordEmailFormPage = (props: Props) => {
             });
             if (response.ok) {
                 const data = await response.json();
-                toast.success('Un e-mail vous a été envoyé.');
+                toast.success('Un e-mail vous a ete envoye.');
             } else {
                 const errorData = await response.json();
                 toast.error('Une erreur est survenue :', errorData.message);
@@ -49,7 +49,7 @@ const ResetPasswordEmailFormPage = (props: Props) => {
 
     return (
         <div className='flex flex-col justify-center items-center m-auto w-full'>
-            <Card title="Mot de passe oublié" className='lg:w-1/2 w-full mt-8 p-4'>
+            <Card title="Mot de passe oublie" className='lg:w-1/2 w-full mt-8 p-4'>
                 <Form formFields={formfields} onSubmit={handleSubmit}></Form>
                 <MinecraftButton label="Retour" onClick={() => router.push('/login')} className='mb-4'></MinecraftButton>
             </Card>

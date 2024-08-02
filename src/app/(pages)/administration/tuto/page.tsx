@@ -48,7 +48,7 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
       if (data && Array.isArray(data.tutos)) {
         return data.tutos;
       } else {
-        console.error('Les données de réponse ne sont pas dans le format attendu');
+        console.error('Les donnees de reponse ne sont pas dans le format attendu');
         return [];
       }
     } else {
@@ -57,7 +57,7 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
       return [];
     }
   } catch (error) {
-    console.error('Erreur réseau:', error);
+    console.error('Erreur reseau:', error);
     return [];
   }
 };
@@ -91,7 +91,7 @@ const TutorielCard: React.FC<{ tutoriel: Tutoriel }> = ({ tutoriel }) => (
         <MinecraftButton label="Modifier" />
     </Link>
     <MinecraftText className='text-white'>{tutoriel.description}</MinecraftText>
-    <MinecraftText className='text-white'>Temps estimé: {tutoriel.estimated_time}</MinecraftText>
+    <MinecraftText className='text-white'>Temps estime: {tutoriel.estimated_time}</MinecraftText>
     {tutoriel.chapters && tutoriel.chapters.map(chapter => (
       <ChapterCard key={chapter.id} chapter={chapter} />
     ))}
@@ -128,7 +128,7 @@ router.push('/login');
             <TutorielCard key={tuto.id} tutoriel={tuto} />
           ))
         ) : (
-          <MinecraftText>Aucun tutoriel trouvé.</MinecraftText>
+          <MinecraftText>Aucun tutoriel trouve.</MinecraftText>
         )}
       </div>
   );
