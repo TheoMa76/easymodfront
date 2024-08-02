@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import MinecraftHN from '@/components/atoms/Texts/Title/MinecraftHN';
@@ -98,66 +98,52 @@ const TutoPage: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
-    console.log(formValues);
-    // Ajout des donnees du tutoriel
-    formData.append('title', formValues['tuto'].title);
-    formData.append('description', formValues['tuto'].description);
-    formData.append('estimated_time', formValues['tuto'].estimated_time);
-    formData.append('game', formValues['tuto'].game);
-    formData.append('position', formValues['tuto'].position);
+    try {
+      const token = Cookies.get('token');
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    if (tutoriel) {
-      tutoriel.chapters.forEach((chapter, chapterIndex) => {
-        formData.append(`chapters[${chapterIndex}][title]`, formValues[`chapter_${chapterIndex}`].chapter_title);
-        formData.append(`chapters[${chapterIndex}][description]`, formValues[`chapter_${chapterIndex}`].chapter_description);
-        formData.append(`chapters[${chapterIndex}][position]`, formValues[`chapter_${chapterIndex}`].chapter_position);
+      if (!apiUrl) {
+        return toast.error('Erreur du developpeur : URL de l\'API non configuree');
+      }
 
-        chapter.contents.forEach((content, contentIndex) => {
-          formData.append(`chapters[${chapterIndex}][contents][${contentIndex}][text]`, formValues[`content_${chapterIndex}_${contentIndex}`].content_text);
-          formData.append(`chapters[${chapterIndex}][contents][${contentIndex}][code]`, formValues[`content_${chapterIndex}_${contentIndex}`].content_code);
-          formData.append(`chapters[${chapterIndex}][contents][${contentIndex}][position]`, formValues[`content_${chapterIndex}_${contentIndex}`].content_position);
+      const tutoData = {
+        ...formValues['tuto'],
+        chapters: Object.keys(formValues).filter(key => key.startsWith('chapter_')).map(chapterKey => {
+          const chapterIndex = parseInt(chapterKey.split('_')[1]);
+          return {
+            ...formValues[chapterKey],
+            contents: Object.keys(formValues).filter(key => key.startsWith(`content_${chapterIndex}_`)).map(contentKey => {
+              const contentIndex = parseInt(contentKey.split('_')[2]);
+              return {
+                ...formValues[contentKey],
+              };
+            })
+          };
+        })
+      };
+      console.log('tutoData:', tutoData);
 
-          // Gestion des fichiers
-          const contentImage = formValues[`content_${chapterIndex}_${contentIndex}`].content_image;
-          if (contentImage && contentImage instanceof File) {
-            formData.append(`chapters[${chapterIndex}][contents][${contentIndex}][image]`, contentImage);
-          }
-
-          const contentVideo = formValues[`content_${chapterIndex}_${contentIndex}`].content_video;
-          if (contentVideo && contentVideo instanceof File) {
-            formData.append(`chapters[${chapterIndex}][contents][${contentIndex}][video]`, contentVideo);
-          }
-        });
+      const response = await fetch(`${apiUrl}/admin/tuto/${id}/update`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tutoData),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Erreur lors de la mise à jour:', errorData);
+        toast.error('Erreur lors de la mise à jour.');
+      } else {
+        console.log('Mise à jour reussie');
+        toast.success('Mise à jour reussie.');
+      }
+    } catch (error) {
+      console.error('Erreur reseau:', error);
+      toast.error('Erreur reseau.');
     }
-
-    // try {
-    //   const token = Cookies.get('token');
-    //   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-    //   if (!apiUrl) {
-    //     return toast.error('Erreur du developpeur : URL de l\'API non configuree');
-    //   }
-
-    //   const response = await fetch(`${apiUrl}/admin/tuto/${id}/update`, {
-    //     method: 'PUT',
-    //     headers: { 'Authorization': `Bearer ${token}` },
-    //     body: formData,
-    //   });
-
-    //   if (!response.ok) {
-    //     const errorData = await response.json();
-    //     console.error('Erreur lors de la mise à jour:', errorData);
-    //     toast.error('Erreur lors de la mise à jour.');
-    //   } else {
-    //     console.log('Mise à jour reussie');
-    //     toast.success('Mise à jour reussie.');
-    //   }
-    // } catch (error) {
-    //   console.error('Erreur reseau:', error);
-    //   toast.error('Erreur reseau.');
-    // }
   };
 
   if (!tutoriel) {

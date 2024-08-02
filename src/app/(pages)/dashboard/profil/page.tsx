@@ -128,7 +128,7 @@ const Profil = () => {
       }
     };
     fetchProgress();
-  }, []);
+  }, [router]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -187,9 +187,35 @@ const Profil = () => {
     return tutorialProgress;
   };
 
+  const handleDelete = async () => {
+    const token = Cookies.get('token');
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    if (!apiUrl) {
+      return toast.error('API URL non configuree');
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/user/delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      });
+
+      if (response.ok) {
+        Cookies.remove('token');
+        router.push('/login');
+      } else {
+        const errorData = await response.json();
+        console.log('Erreur de connexion:', errorData);
+      }
+    } catch (error) {
+      console.error('Erreur reseau:', error);
+    }
+  }
+  
   return (
     <div className='flex flex-col items-start gap-10 lg:mx-10'>
-      <Card title="Voici votre profil" className=' w-full lg:w-10/12 mt-8' bg="bg-deepslate">
+      <Card title="Voici votre profil" className=' w-full lg:w-10/12 mt-8 -z-10' bg="bg-deepslate">
         <div className='w-full lg:w-1/2 lg:m-auto self-center my-10'>
           <MinecraftText className='mt-5 w-full'>
             Sur votre profil, vous avez la possibilite 
@@ -201,7 +227,7 @@ const Profil = () => {
           </MinecraftText>
         </div>
       </Card>
-      <Card title='Votre compte' className='lg:w-10/12 mt-8 w-full'>
+      <Card title='Votre compte' className='lg:w-10/12 mt-8 w-full -z-10'>
         {userData === null ? (
           <MinecraftHN as="h2">Chargement...</MinecraftHN>
         ) : (
@@ -209,6 +235,7 @@ const Profil = () => {
             <MinecraftText>Email : {userData.email}</MinecraftText>
             <MinecraftText>Nom d&apos;utilisateur : {userData.username}</MinecraftText>
             <MinecraftText>Rôle : {formatRoles(userData.roles as unknown as Role[])}</MinecraftText>
+            <MinecraftButton label="Se desinscrire" onClick={() => handleDelete()} className="btn btn-danger z-0"/>
           </>
         )}
 
@@ -217,7 +244,7 @@ const Profil = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Modifier le profil"
-          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-infinite"
+          className="fixed inset-0 flex items-center z-infinite justify-center bg-gray-800 bg-opacity-75"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
           <Card title="Editer votre profil." className='w-full'>
@@ -233,7 +260,7 @@ const Profil = () => {
           </Card>
         </Modal>
       </Card>
-      <Card title="Votre progression" className='lg:w-10/12 mt-8 w-full'>
+      <Card title="Votre progression" className='lg:w-10/12 mt-8 w-full -z-10'>
         {progress === null ? (
           <MinecraftHN as="h2">Chargement...</MinecraftHN>
         ) : (

@@ -6,9 +6,9 @@ type MinecraftInputVariant = 'primary' | 'secondary' | 'neutral';
 interface MinecraftInputProps {
   variant?: MinecraftInputVariant;
   placeholder?: string;
-  value?: string;
-  onChange?: ChangeEventHandler<HTMLSelectElement | HTMLInputElement>;
-  onInput?: (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void; // More generic event handler
+  value?: string | number;
+  onChange?: ChangeEventHandler<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>;
+  onInput?: (event: ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => void;
   disabled?: boolean;
   className?: string;
   name?: string;
@@ -63,6 +63,19 @@ const MinecraftInput: React.FC<MinecraftInputProps> = ({
             </option>
           ))}
         </select>
+      ) : type === 'textarea' ? (
+        <textarea
+          id={label}
+          className={`${baseClasses} ${className} ${icon ? 'pl-10' : ''}`}
+          placeholder={placeholder}
+          aria-label={`${placeholder} + ${label}`}
+          value={value}
+          onChange={onChange}
+          onInput={onInput as FormEventHandler<HTMLTextAreaElement>} // Type casting for textarea
+          disabled={disabled}
+          name={name}
+          required={isRequired}
+        />
       ) : (
         <input
           id={label}

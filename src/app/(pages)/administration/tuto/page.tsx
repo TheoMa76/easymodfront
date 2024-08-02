@@ -62,10 +62,7 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
   }
 };
 
-const goToEdit = (id:any) => {
-  console.log(id);
 
-};
 
 const ContentCard: React.FC<{ content: Content }> = ({ content }) => (
   <Card className='mb-3 w-full' bg='bg-dirt'>
@@ -121,8 +118,20 @@ router.push('/login');
     loadTutoriels();
   }, [router]);
 
+  const goToCreate = () => {
+    router.push('/administration/tuto/create');
+  }
+  
+  const goToEdit = (id:any) => {
+    router.push(`/administration/tuto/edit/${id}`);
+  
+  };
+
   return (
       <div className='bg-black bg-opacity-50 w-full lg:w-10/12 flex mt-5 flex-col m-auto'>
+        <Card title='Ajouter un tuto' bg='bg-deepslate' className='w-full'>
+          <MinecraftButton label="Ajouter un tutoriel" onClick={() => goToCreate()} />
+        </Card>
         {Array.isArray(tutoriels) && tutoriels.length > 0 ? (
           tutoriels.map(tuto => (
             <TutorielCard key={tuto.id} tutoriel={tuto} />

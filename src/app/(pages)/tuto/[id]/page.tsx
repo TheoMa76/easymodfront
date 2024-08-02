@@ -127,6 +127,33 @@ router.push('/login');
     }
   };
 
+  const handleProgress = () => {
+    try {
+      const token = Cookies.get('token');
+      if (!token) {
+        router.push('/login');
+      } else {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
+          Cookies.remove('token');
+          router.push('/login');
+        }
+        const response = fetch(`/api/progression/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Erreur de connexion:', error);
+      return null;
+    }
+  }
+  
+
+
   return (
     <div className='flex flex-col justify-center items-center w-full'>
       <Card title={`Tutoriel ${tuto.position} : ${tuto.title}`} bg="bg-obsi" className='lg:w-10/12 w-full my-8 font-semibold'>
@@ -156,6 +183,10 @@ router.push('/login');
           onClick={handleNextChapter}
           label="Chapitre suivant"
         />
+        <MinecraftButton
+          onClick={handleProgress}
+          label="Valider le chapitre"
+          />
         <MinecraftButton
           onClick={handlePrevChapter}
           label="Chapitre precedent"
