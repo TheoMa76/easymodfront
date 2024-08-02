@@ -119,7 +119,7 @@ router.push('/login');
     };
 
     loadTutoriels();
-  }, []);
+  }, [router]);
 
   return (
       <div className='bg-black bg-opacity-50 w-full lg:w-10/12 flex mt-5 flex-col m-auto'>

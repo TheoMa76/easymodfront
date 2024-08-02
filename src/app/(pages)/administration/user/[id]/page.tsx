@@ -86,7 +86,7 @@ router.push('/login');
 
       loadUser();
     }
-  }, [id]);
+  }, [id,router]);
 
   const initialValues = {
     email: user ? user.email : '',

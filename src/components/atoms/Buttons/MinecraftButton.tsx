@@ -54,7 +54,7 @@ const MinecraftButton: React.FC<ButtonProps> = ({
         className={`${baseClasses} ${hoverClasses} ${beforeClasses} ${className} flex flex-row items-center`}
         onClick={() => {
           playClickSound(sound);
-          if (onClick) onClick();
+          if (onClick) onClick(sound);
         }}
         disabled={disabled}
         aria-label={label}
