@@ -188,7 +188,7 @@ router.push('/login');
           <MinecraftHN as='h2' className=''>{currentChapter.title}</MinecraftHN>
           <MinecraftText className='font-medium'>{currentChapter.description}</MinecraftText>
           {currentChapter.contents.map(content => (
-            <div key={content.id} className='my-16 w-full'>
+            <div key={content.id} className={`my-16 w-full ${content.id}`}>
               {content.text && <Card bg="bg-stone" className='my-5 font-thin'><MinecraftText className='my-3 mx-5'>{content.text}</MinecraftText></Card>}
               {content.code && <Card bg="bg-deepslate" className='my-5 font-thin text-left'><TextChat>{content.code}</TextChat></Card>}
               {content.image && <Card bg="bg-dirt" className='my-5 font-thin'><img src={`${apiUrl}/${content.imageUrl}`} alt="Image" /></Card>}
