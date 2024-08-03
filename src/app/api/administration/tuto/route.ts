@@ -13,7 +13,9 @@ export async function GET(request: Request) {
   try {
     const response = await fetch(`${apiUrl}/admin/tuto`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`,'Cache-Control': 'no-cache, no-store, must-revalidate', // Evite le cache
+    'Pragma': 'no-cache', // Pour les navigateurs plus anciens
+    'Expires': '0' }
     });
 
     if (response.ok) {

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 interface Content {
   text?: string | null;
@@ -144,16 +145,16 @@ const CreateTutorialForm: React.FC<CreateTutorialFormProps> = ({ defaultValues, 
         ? `/api/administration/tuto/edit/${tutorial.id}`
         : '/api/administration/tuto/create';
 
-      const formData = convertToFormData(tutorial);
+      //const formData = convertToFormData(tutorial);
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
-        body: formData
+        body: JSON.stringify(tutorial),
       });
 
       if (response.ok) {
         // Gérer la réponse réussie
-        console.log("Succès !");
+        toast.success("Succès !");
       } else {
         // Gérer l'erreur
         console.error("Erreur lors de la soumission");

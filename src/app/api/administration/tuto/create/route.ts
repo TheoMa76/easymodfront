@@ -9,8 +9,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const token = request.headers.get('authorization')?.split(' ')[1];
-    const tutoData = await request.json(); // Récupérer les données JSON du corps de la requête
-    console.log('tutoData:', tutoData);
+    const tutoData = await request.json(); 
     tutoData.imageFile = null;
     
     const response = await fetch(`${apiUrl}/admin/parpitier`, {

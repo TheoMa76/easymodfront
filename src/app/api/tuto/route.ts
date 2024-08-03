@@ -15,7 +15,9 @@ export async function GET() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
+        'Authorization': token ? `Bearer ${token}` : '','Cache-Control': 'no-cache, no-store, must-revalidate', // Evite le cache
+    'Pragma': 'no-cache', // Pour les navigateurs plus anciens
+    'Expires': '0'
       },
     });
 

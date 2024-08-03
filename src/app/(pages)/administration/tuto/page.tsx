@@ -41,7 +41,9 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
   try {
     const response = await fetch('/api/administration/tuto', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache, no-store, must-revalidate', // Evite le cache
+    'Pragma': 'no-cache', // Pour les navigateurs plus anciens
+    'Expires': '0' },
     });
     if (response.ok) {
       const data = await response.json();
