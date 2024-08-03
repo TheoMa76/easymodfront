@@ -109,7 +109,7 @@ router.push('/login');
     if (currentChapterIndex < tuto.chapters.length - 1) {
       setCurrentChapterIndex(currentChapterIndex + 1);
     } else {
-      toast.info('Vous avez atteint la fin du tutoriel.');
+      router.push('/tuto/end');
     }
   };
 
@@ -127,30 +127,54 @@ router.push('/login');
     }
   };
 
-  const handleProgress = () => {
+  const handleProgress = async () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const chapter = currentChapter.id;
+    const completedAt = new Date().toISOString();
+    const isCompleted = true;
+  
+    if (!apiUrl) {
+      console.error('API URL non configurée');
+      return;
+    }
+  
     try {
       const token = Cookies.get('token');
       if (!token) {
         router.push('/login');
-      } else {
-        const decodedToken = jwtDecode(token);
-        if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
-          Cookies.remove('token');
-          router.push('/login');
-        }
-        const response = fetch(`/api/progression/${id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        return;
+      }
+  
+      const decodedToken = jwtDecode(token);
+      if (!decodedToken.exp || decodedToken.exp < Date.now() / 1000) {
+        Cookies.remove('token');
+        router.push('/login');
+        return;
+      }
+  
+      const response = await fetch(`${apiUrl}/progress/progression/insert`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ chapter, completedAt, isCompleted }),
+      });
+  
+      if (response.ok) {
+        toast.success('Chapitre validé');
+        handleNextChapter();
+      } if(response.status == 401){
+        toast.error('Veuillez vous reconnecter.');
+        router.push('/login');
+      }else {
+        const errorData = await response.json();
+        console.error('Erreur de connexion:', errorData);
       }
     } catch (error) {
       console.error('Erreur de connexion:', error);
-      return null;
     }
-  }
+  };
   
 
 
@@ -179,18 +203,21 @@ router.push('/login');
 }            </div>
           ))}
         </div>
-        <MinecraftButton
-          onClick={handleNextChapter}
-          label="Chapitre suivant"
-        />
-        <MinecraftButton
-          onClick={handleProgress}
-          label="Valider le chapitre"
+        <div className='flex justify-between w-full lg:w-1/2'>
+        
+          <MinecraftButton
+            onClick={handleNextChapter}
+            label="Chapitre suivant"
           />
-        <MinecraftButton
-          onClick={handlePrevChapter}
-          label="Chapitre precedent"
-        />
+          <MinecraftButton
+            onClick={handleProgress}
+            label="Valider le chapitre"
+            />
+          <MinecraftButton
+            onClick={handlePrevChapter}
+            label="Chapitre precedent"
+          />
+          </div>
       </Card>
     </div>
   );

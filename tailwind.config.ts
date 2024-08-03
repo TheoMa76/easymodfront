@@ -56,6 +56,7 @@ const config: Config = {
       },
       zIndex: {
         'infinite': '999999',
+        'hop':'-1',
       },
     },
   },

@@ -17,6 +17,7 @@ interface FormField {
   placeholder: string;
   type: string;
   options?: string[];
+  required?: boolean;
 }
 
 interface FormProps {
@@ -53,7 +54,7 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},pu
     const newErrors: FormErrors = {};
 
     formFields.forEach((field) => {
-      if (!values[field.name]) {
+      if (!values[field.name] && field.required) {
         newErrors[field.name] = `${field.label} doit être rempli.`;
       }
     });
@@ -101,8 +102,8 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},pu
               className="text-xl"
               type={field.type}
               name={field.name}
-              isRequired={true}
-              options={field.options} // Pass options to MinecraftInput
+              isRequired={field.required}
+              options={field.options}
             />
           ) : (
             <MinecraftInput
@@ -114,7 +115,7 @@ const Form: React.FC<FormProps> = ({ formFields, onSubmit, initialValues = {},pu
               className="text-xl"
               type={field.type}
               name={field.name}
-              isRequired={true}
+              isRequired={field.required}
             />
           )}
             {errors[field.name] && (

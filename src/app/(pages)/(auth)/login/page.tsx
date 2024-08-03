@@ -31,6 +31,9 @@ const LoginPage = () => {
         Cookies.set('token', token);
         router.push('/dashboard/profil');
         toast.success('Connexion reussie');
+      }
+      if(response.status === 401) {
+        toast.error('Nom d\'utilisateur ou mot de passe incorrect');
       } else {
         const errorData = await response.json();
         console.log('Erreur de connexion:', errorData);

@@ -62,39 +62,14 @@ async function getProgress() {
   }
 }
 
-async function handleSubmit(values: { [key: string]: string }) {
-  const { username, password, newpassword, confirmnewpassword } = values;
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  if (!apiUrl) {
-    return toast.error('API URL non configuree');
-  }
-
-  try {
-    const response = await fetch(`${apiUrl}/user/update`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, newpassword, confirmnewpassword }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      toast.success('Profil mis à jour');
-    } else {
-      const errorData = await response.json();
-      console.log('Erreur de connexion:', errorData);
-    }
-  } catch (error) {
-    console.error('Erreur reseau:', error);
-  }
-}
 
 const formFields = [
   { name: 'username', label: "Nom d'utilisateur", placeholder: "Nom d'utilisateur", type: 'text', required: false },
   { name: 'email', label: 'Email', placeholder: 'E-mail', type: 'text', required: false },
-  { name: 'current_password', label: 'Mot de passe actuel', placeholder: 'Mot de passe actuel', type: 'password', required: false },
+  { name: 'currentPassword', label: 'Mot de passe actuel', placeholder: 'Mot de passe actuel', type: 'password', required: true },
   { name: 'password', label: 'Nouveau mot de passe', placeholder: 'Nouveau mot de passe', type: 'password', required: false },
-  { name: 'confirm_password', label: 'Confirmez votre nouveau mot de passe', placeholder: 'Confirmez nouveau mot de passe', type: 'password', required: false },
+  { name: 'confirmPassword', label: 'Confirmez votre nouveau mot de passe', placeholder: 'Confirmez nouveau mot de passe', type: 'password', required: false },
 ];
 
 const Profil = () => {
@@ -102,6 +77,40 @@ const Profil = () => {
   const [progress, setProgress] = useState<any>(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  async function handleSubmit(values: { [key: string]: string }) {
+    const { username, email, password, currentPassword, confirmPassword } = values;
+    const oldEmail = userData?.email;
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    
+    if (!apiUrl) {
+      return toast.error('API URL non configuree');
+    }
+    
+    try {
+      if(!userData){
+        return toast.error('Utilisateur non trouve');
+      }
+      const response = await fetch(`${apiUrl}/user/edit/${userData.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${Cookies.get('token')}` },
+        body: JSON.stringify({ username, email, password, currentPassword, confirmPassword , oldEmail }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        toast.success('Profil mis à jour');
+        Cookies.remove('token');
+        router.push('/login');
+        toast.info('Veuillez vous reconnecter');
+      } else {
+        const errorData = await response.json();
+        console.log('Erreur de connexion:', errorData);
+      }
+    } catch (error) {
+      console.error('Erreur reseau:', error);
+    }
+  }
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -247,7 +256,7 @@ const Profil = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Modifier le profil"
-          className="fixed inset-0 flex items-center z-50 justify-center bg-gray-800 bg-opacity-75"
+          className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
           <Card title="Editer votre profil." className='w-full'>

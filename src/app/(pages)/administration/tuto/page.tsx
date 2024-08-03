@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify';
 
 interface Tutoriel {
   id: number;
@@ -82,11 +83,30 @@ const ChapterCard: React.FC<{ chapter: Chapter }> = ({ chapter }) => (
     </Card>
 );
 
+const handleDelete = async (id: number) => {
+  const token = Cookies.get('token');
+  try {
+    const response = await fetch(`/api/administration/tuto/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    });
+    if (response.ok) {
+      toast.success('Tutoriel supprime');
+    } else {
+      const errorData = await response.json();
+      console.error('Erreur de connexion:', errorData);
+    }
+  } catch (error) {
+    console.error('Erreur reseau:', error);
+  }
+}
+
 const TutorielCard: React.FC<{ tutoriel: Tutoriel }> = ({ tutoriel }) => (
   <Card title={tutoriel.title} className='w-full mb-5'>
-    <Link href={`/administration/tuto/${tutoriel.title}?id=${tutoriel.id}`}>
+    <Link href={`/administration/tuto/${tutoriel.id}?id=${tutoriel.id}`}>
         <MinecraftButton label="Modifier" />
     </Link>
+    <MinecraftButton label="Supprimer" onClick={() => handleDelete(tutoriel.id)} />
     <MinecraftText className='text-white'>{tutoriel.description}</MinecraftText>
     <MinecraftText className='text-white'>Temps estime: {tutoriel.estimated_time}</MinecraftText>
     {tutoriel.chapters && tutoriel.chapters.map(chapter => (

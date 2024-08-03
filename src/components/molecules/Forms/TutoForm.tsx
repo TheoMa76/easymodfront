@@ -1,37 +1,42 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MinecraftInput from '@/components/atoms/Inputs/MinecraftInput';
 import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Cookies from 'js-cookie';
 
-// Interfaces pour les données du formulaire
 interface Content {
-  text?: string;
-  code?: string;
+  text?: string | null;
+  code?: string | null;
   position: number;
   video?: string | null;
   imageFile?: File | null;
 }
 
 interface Chapter {
-  title: string;
-  description: string;
+  title?: string | null;
+  description?: string | null;
   position: number;
   contents: Content[];
 }
 
 interface Tutorial {
-  title: string;
-  estimated_time: string;
-  difficulty: string;
-  game: string;
+  id?: number | null;
+  title?: string | null;
+  estimated_time?: string | null;
+  difficulty?: string | null;
+  game?: string | null;
   chapters: Chapter[];
   position: number;
   imageFile?: File | null;
 }
 
+interface CreateTutorialFormProps {
+  defaultValues?: Tutorial;
+  edit?: boolean;
+}
+
 // Composant de formulaire
-const CreateTutorialForm: React.FC = () => {
+const CreateTutorialForm: React.FC<CreateTutorialFormProps> = ({ defaultValues, edit = false }) => {
   const [tutorial, setTutorial] = useState<Tutorial>({
     title: '',
     estimated_time: '',
@@ -41,6 +46,15 @@ const CreateTutorialForm: React.FC = () => {
     position: 1,
   });
 
+  useEffect(() => {
+    if (defaultValues) {
+      setTutorial({
+        ...defaultValues,
+        chapters: defaultValues.chapters || []
+      });
+    }
+  }, [defaultValues]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setTutorial(prev => ({ ...prev, [name]: value }));
@@ -49,16 +63,16 @@ const CreateTutorialForm: React.FC = () => {
   const convertToFormData = (t: Tutorial): FormData => {
     const formData = new FormData();
     // Ajout des propriétés simples
-    formData.append('title', t.title);
-    formData.append('estimated_time', t.estimated_time);
-    formData.append('difficulty', t.difficulty);
-    formData.append('game', t.game);
+    formData.append('title', t.title ?? '');
+    formData.append('estimated_time', t.estimated_time ?? '');
+    formData.append('difficulty', t.difficulty ?? '');
+    formData.append('game', t.game ?? '');
     formData.append('position', t.position.toString());
   
     // Ajout des chapters et contenus
     tutorial.chapters.forEach((chapter, chapterIndex) => {
-      formData.append(`chapters[${chapterIndex}].title`, chapter.title);
-      formData.append(`chapters[${chapterIndex}].description`, chapter.description);
+      formData.append(`chapters[${chapterIndex}].title`, chapter.title ?? '');
+      formData.append(`chapters[${chapterIndex}].description`, chapter.description ?? '');
       formData.append(`chapters[${chapterIndex}].position`, chapter.position.toString());
   
       chapter.contents.forEach((content, contentIndex) => {
@@ -123,19 +137,28 @@ const CreateTutorialForm: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(tutorial);
     e.preventDefault();
-    try{
-        const token = Cookies.get('token');
-        const formData = convertToFormData(tutorial);
-        const response = await fetch('/api/administration/tuto/create', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json','Authorization': `Bearer ${token}` },
-            body: JSON.stringify(tutorial)
-        });
+    try {
+      const token = Cookies.get('token');
+      const url = edit 
+        ? `/api/administration/tuto/edit/${tutorial.id}`
+        : '/api/administration/tuto/create';
 
+      const formData = convertToFormData(tutorial);
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
 
-    }catch(e){
+      if (response.ok) {
+        // Gérer la réponse réussie
+        console.log("Succès !");
+      } else {
+        // Gérer l'erreur
+        console.error("Erreur lors de la soumission");
+      }
+    } catch (e) {
       console.error(e);
     }
   };
@@ -145,45 +168,45 @@ const CreateTutorialForm: React.FC = () => {
       <MinecraftInput
         name="title"
         label="Title"
-        value={tutorial.title}
+        value={tutorial.title || ''}
         onChange={handleInputChange}
         className="mb-4"
       />
       <MinecraftInput
         name="estimated_time"
         label="Estimated Time"
-        value={tutorial.estimated_time}
+        value={tutorial.estimated_time || ''}
         onChange={handleInputChange}
         className="mb-4"
       />
       <MinecraftInput
         name="difficulty"
         label="Difficulty"
-        value={tutorial.difficulty}
+        value={tutorial.difficulty || ''}
         onChange={handleInputChange}
         className="mb-4"
       />
       <MinecraftInput
         name="game"
         label="Game"
-        value={tutorial.game}
+        value={tutorial.game || ''}
         onChange={handleInputChange}
         className="mb-4"
       />
-        <MinecraftInput
-            name="position"
-            label="Position"
-            value={tutorial.position}
-            onChange={handleInputChange}
-            className="mb-4"
-        />
-        <MinecraftInput
-            name="imageFile"
-            label="imageFile"
-            type="file"
-            onChange={(e:any) => setTutorial(prev => ({ ...prev, imageFile: e.target.files[0] }))}
-            className="mb-4"
-            />
+      <MinecraftInput
+        name="position"
+        label="Position"
+        value={tutorial.position}
+        onChange={handleInputChange}
+        className="mb-4"
+      />
+      <MinecraftInput
+        name="imageFile"
+        label="Image File"
+        type="file"
+        onChange={(e: any) => setTutorial(prev => ({ ...prev, imageFile: e.target.files[0] }))}
+        className="mb-4"
+      />
 
       {tutorial.chapters.map((chapter, chapterIndex) => (
         <div key={chapterIndex} className="mt-4 border-4 border-t-white border-l-white border-b-custom-dark-grey border-r-custom-dark-grey p-4">
@@ -197,15 +220,15 @@ const CreateTutorialForm: React.FC = () => {
           <MinecraftInput
             name="title"
             label={`Chapter Title ${chapterIndex + 1}`}
-            value={chapter.title}
-            onChange={(e:any) => handleChapterChange(chapterIndex, e)}
+            value={chapter.title || ''}
+            onChange={(e: any) => handleChapterChange(chapterIndex, e)}
             className="mb-4"
           />
           <MinecraftInput
             name="description"
             label={`Chapter Description ${chapterIndex + 1}`}
-            value={chapter.description}
-            onChange={(e:any) => handleChapterChange(chapterIndex, e)}
+            value={chapter.description || ''}
+            onChange={(e: any) => handleChapterChange(chapterIndex, e)}
             className="mb-4"
             type="textarea"
           />
@@ -222,7 +245,7 @@ const CreateTutorialForm: React.FC = () => {
                 name="text"
                 label={`Content Text ${contentIndex + 1}`}
                 value={content.text || ''}
-                onChange={(e:any) => handleContentChange(chapterIndex, contentIndex, e)}
+                onChange={(e: any) => handleContentChange(chapterIndex, contentIndex, e)}
                 className="mb-4"
                 type="textarea"
               />
@@ -230,7 +253,7 @@ const CreateTutorialForm: React.FC = () => {
                 name="code"
                 label={`Content Code ${contentIndex + 1}`}
                 value={content.code || ''}
-                onChange={(e:any) => handleContentChange(chapterIndex, contentIndex, e)}
+                onChange={(e: any) => handleContentChange(chapterIndex, contentIndex, e)}
                 className="mb-4"
                 type="textarea"
               />
@@ -238,21 +261,23 @@ const CreateTutorialForm: React.FC = () => {
                 name="video"
                 label={`Content Video URL ${contentIndex + 1}`}
                 value={content.video || ''}
-                onChange={(e:any) => handleContentChange(chapterIndex, contentIndex, e)}
+                onChange={(e: any) => handleContentChange(chapterIndex, contentIndex, e)}
                 className="mb-4"
               />
               <MinecraftInput
                 name="position"
                 label={`Content Position ${contentIndex + 1}`}
                 value={content.position}
-                onChange={(e:any) => handleContentChange(chapterIndex, contentIndex, e)}
-                className="mb-4"/>
-                <MinecraftInput
-                    name="imageFile"
-                    label="imageFile"
-                    type="file"
-                    onChange={(e:any) => setTutorial(prev => ({ ...prev, imageFile: e.target.files[0] }))}
-                    className="mb-4 text-white"/>
+                onChange={(e: any) => handleContentChange(chapterIndex, contentIndex, e)}
+                className="mb-4"
+              />
+              <MinecraftInput
+                name="imageFile"
+                label="Image File"
+                type="file"
+                onChange={(e: any) => setTutorial(prev => ({ ...prev, imageFile: e.target.files[0] }))}
+                className="mb-4"
+              />
             </div>
           ))}
           <MinecraftButton

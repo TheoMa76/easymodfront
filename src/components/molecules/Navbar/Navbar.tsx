@@ -5,6 +5,7 @@ import MinecraftButton from '@/components/atoms/Buttons/MinecraftButton';
 import Menu from '@/components/molecules/Menu/Menu';
 import Cookies from 'js-cookie';
 import {jwtDecode, JwtPayload } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
 
 // Define a custom interface for your token payload
 interface CustomJwtPayload extends JwtPayload {
@@ -15,6 +16,7 @@ const Navbar: React.FC = () => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     const token = Cookies.get('token');
@@ -44,6 +46,7 @@ const Navbar: React.FC = () => {
     Cookies.remove('token');
     setIsAuthenticated(false);
     handleMenuClose();
+    router.push('/');
   };
 
   const buttons = [
