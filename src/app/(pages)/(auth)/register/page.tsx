@@ -36,7 +36,7 @@ const RegisterPage = () => {
           const logindata = await loginresp.json();
           const token = logindata.token;
           Cookies.set('token', token);
-          router.push('/dashboard');
+          router.push('/dashboard/profil');
           toast.success('Connexion reussie');
         }
       } else {
