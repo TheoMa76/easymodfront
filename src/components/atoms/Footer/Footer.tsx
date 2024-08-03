@@ -4,7 +4,7 @@ import MinecraftText from '../Texts/TextBlock/MinecraftText';
 
 const Footer: React.FC = () => {
   return (
-    <footer className='bg-dirt w-full mt-20 py-5'>
+    <footer className='bg-dirt w-full mt-20 text-white py-5'>
       <MinecraftText>Travail pedagogique sans objectifs commerciaux</MinecraftText>
       <MinecraftText>
         Ce site est conçu dans le respect de la legislation en vigueur (RGPD). 

@@ -9,7 +9,7 @@ type MinecraftTextProps = {
 
 const MinecraftText: React.FC<MinecraftTextProps> = ({ children, className,size = 'text-xl' }) => {
   return (
-    <p className={`minecraft-text text-white px-4 py-2 ${size} minecraftTextBlock ${className}`}>{children}</p>
+    <p className={`minecraft-text px-4 py-2 ${size} minecraftTextBlock ${className}`}>{children}</p>
   );
 };
 

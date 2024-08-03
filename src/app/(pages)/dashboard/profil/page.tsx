@@ -78,6 +78,45 @@ const Profil = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Fonction pour traiter et calculer la progression
+  const calculateTutorialProgress = () => {
+    if (!progress || progress === "Vous n'avez pas encore fais de tutoriel.") return [];
+
+    const { progress: progressList, nbChapters, idChapters, tutorialTitles, chapterTitles } = progress;
+
+    const completedChapters = progressList.reduce((acc: Record<string, Set<number>>, item: any) => {
+      const tutorialId = Object.keys(idChapters).find(id => idChapters[id].includes(item.chapter.id));
+      if (!tutorialId) return acc;
+
+      if (!acc[tutorialId]) {
+        acc[tutorialId] = new Set<number>();
+      }
+      if (item.isCompleted) {
+        acc[tutorialId].add(item.chapter.id);
+      }
+      return acc;
+    }, {});
+
+    return Object.keys(nbChapters).map(tutorialId => {
+      const totalChapters = nbChapters[tutorialId];
+      const completedChaptersCount = completedChapters[tutorialId] ? completedChapters[tutorialId].size : 0;
+      const percentage = totalChapters ? (completedChaptersCount / totalChapters) * 100 : 0;
+      return {
+        id: tutorialId,
+        title: tutorialTitles[tutorialId] || `Tutoriel ${tutorialId}`,
+        totalChapters,
+        completedChapters: completedChaptersCount,
+        percentage: percentage.toFixed(2),
+        chapters: idChapters[tutorialId].map((chapterId: number) => ({
+          id: chapterId,
+          title: chapterTitles[chapterId] || `Chapitre ${chapterId}`,
+          isCompleted: progressList.some((p: any) => p.chapter.id === chapterId && p.isCompleted)
+        }))
+      };
+    });
+  };
+
+  // Fonction pour gérer la soumission du formulaire
   async function handleSubmit(values: { [key: string]: string }) {
     const { username, email, password, currentPassword, confirmPassword } = values;
     const oldEmail = userData?.email;
@@ -132,10 +171,11 @@ const Profil = () => {
     fetchUserData();
 
     const fetchProgress = async () => {
-      const progress = await getProgress();
-      if (progress && progress.length > 0) {
-        setProgress(progress);
-      }else{
+      const progressData = await getProgress();
+      console.log(progressData);
+      if (progressData && progressData.progress && progressData.progress.length > 0) {
+        setProgress(progressData);
+      } else {
         setProgress("Vous n&apos;avez pas encore fais de tutoriel.");
       }
     };
@@ -158,45 +198,6 @@ const Profil = () => {
       .map(role => roleMapping[role]);
   
     return formattedRoles.length === 1 ? formattedRoles[0] : formattedRoles.join(', ');
-  };
-
-  const calculateTutorialProgress = () => {
-    if (!progress) return [];
-  
-    const { progress: progressList, nbChapters, idChapters, tutorialTitles, chapterTitles } = progress;
-  
-    const completedChapters = progressList.reduce((acc: Record<string, Set<number>>, item: any) => {
-      const tutorialId = Object.keys(idChapters).find(id => idChapters[id].includes(item.chapter.id));
-      if (!tutorialId) return acc;
-  
-      if (!acc[tutorialId]) {
-        acc[tutorialId] = new Set<number>();
-      }
-      if (item.isCompleted) {
-        acc[tutorialId].add(item.chapter.id);
-      }
-      return acc;
-    }, {});
-  
-    const tutorialProgress = Object.keys(nbChapters).map(tutorialId => {
-      const totalChapters = nbChapters[tutorialId];
-      const completedChaptersCount = completedChapters[tutorialId] ? completedChapters[tutorialId].size : 0;
-      const percentage = totalChapters ? (completedChaptersCount / totalChapters) * 100 : 0;
-      return {
-        id: tutorialId,
-        title: tutorialTitles[tutorialId] || `Tutoriel ${tutorialId}`,
-        totalChapters,
-        completedChapters: completedChaptersCount,
-        percentage: percentage.toFixed(2),
-        chapters: idChapters[tutorialId].map((chapterId: number) => ({
-          id: chapterId,
-          title: chapterTitles[chapterId] || `Chapitre ${chapterId}`,
-          isCompleted: progressList.some((p: any) => p.chapter.id === chapterId && p.isCompleted)
-        }))
-      };
-    });
-  
-    return tutorialProgress;
   };
 
   const handleDelete = async () => {
@@ -275,20 +276,20 @@ const Profil = () => {
       <Card title="Votre progression" className='lg:w-10/12 mt-8 w-full'>
         {progress === null ? (
           <MinecraftHN as="h2">Chargement...</MinecraftHN>
-        ) : Array.isArray(progress) && progress.length > 0 ? (
+        ) : Array.isArray(progress.progress) && progress.progress.length > 0 ? (
           calculateTutorialProgress().map((tutorial) => (
             <div key={tutorial.id} className='mb-6 w-full'>
               <Card title={`Tutoriel : ${tutorial.title} ${tutorial.percentage}%`} className='text-xl lg:w-1/2 mb-2' bg="bg-stone">
                 <MinecraftText>{tutorial.completedChapters}/{tutorial.totalChapters} chapitres finis ({tutorial.percentage}%)</MinecraftText>
                 <div className='pl-4'>
-                  {tutorial.chapters.map((chapter: any) => (
-                    <MinecraftText
-                      key={chapter.id}
-                      className={`ml-2 ${chapter.isCompleted ? 'text-custom-green' : 'text-white'}`}
-                    >
-                      {chapter.title}
-                    </MinecraftText>
-                  ))}
+                {tutorial.chapters.map((chapter: any) => (
+                  <MinecraftText
+                    key={chapter.id}
+                    className={`ml-2 ${chapter.isCompleted ? 'text-custom-green' : 'text-white'}`}
+                  >
+                    {chapter.title}
+                  </MinecraftText>
+                ))}
                 </div>
               </Card>
             </div>
@@ -296,7 +297,7 @@ const Profil = () => {
         ) : (
           <MinecraftText>Vous n&apos;avez pas encore fais de tutoriel.</MinecraftText>
         )}
-</Card>
+      </Card>
     </div>
   );
 };
