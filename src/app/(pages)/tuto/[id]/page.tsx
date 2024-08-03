@@ -34,6 +34,7 @@ interface Content {
   text?: string;
   code?: string;
   image?: string;
+  imageUrl?: string;
   video?: string;
   position: number;
 }
@@ -78,6 +79,8 @@ const DoTutoPage: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get('id') ? parseInt(searchParams.get('id') as string) : null;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 
   useEffect(() => {
     const token = Cookies.get('token');
@@ -188,7 +191,7 @@ router.push('/login');
             <div key={content.id} className='my-16 w-full'>
               {content.text && <Card bg="bg-stone" className='my-5 font-thin'><MinecraftText className='my-3 mx-5'>{content.text}</MinecraftText></Card>}
               {content.code && <Card bg="bg-deepslate" className='my-5 font-thin text-left'><TextChat>{content.code}</TextChat></Card>}
-              {content.image && <Card bg="bg-dirt" className='my-5 font-thin'><img src={content.image} alt="Image" /></Card>}
+              {content.image && <Card bg="bg-dirt" className='my-5 font-thin'><img src={`${apiUrl}/${content.imageUrl}`} alt="Image" /></Card>}
               {content.video && 
                               <Card bg="bg-glowstone" className='my-5 w-full h-fit font-thin p-5'>
                                 <iframe 

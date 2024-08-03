@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     const token = request.headers.get('authorization')?.split(' ')[1];
     const tutoData = await request.json(); 
+    console.log(tutoData);
     tutoData.imageFile = null;
     
     const response = await fetch(`${apiUrl}/admin/parpitier`, {
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify(tutoData), // Envoyer les données JSON au serveur externe
     });
-
+    console.log(response);
     if (response.ok) {
       const data = await response.json();
       return NextResponse.json({ tutos: data }, { status: 200 });

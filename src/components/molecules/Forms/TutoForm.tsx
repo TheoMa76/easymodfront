@@ -198,6 +198,7 @@ const CreateTutorialForm: React.FC<CreateTutorialFormProps> = ({ defaultValues, 
         name="position"
         label="Position"
         value={tutorial.position}
+        type="number"
         onChange={handleInputChange}
         className="mb-4"
       />
@@ -269,6 +270,7 @@ const CreateTutorialForm: React.FC<CreateTutorialFormProps> = ({ defaultValues, 
                 name="position"
                 label={`Content Position ${contentIndex + 1}`}
                 value={content.position}
+                type="number"
                 onChange={(e: any) => handleContentChange(chapterIndex, contentIndex, e)}
                 className="mb-4"
               />
