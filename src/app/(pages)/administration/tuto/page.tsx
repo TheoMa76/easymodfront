@@ -47,7 +47,6 @@ const fetchTutoriels = async (): Promise<Tutoriel[]> => {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       if (data && Array.isArray(data.tutos)) {
         return data.tutos;
       } else {

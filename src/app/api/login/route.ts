@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({ username, password }),
     });
 
+    console.log(JSON.stringify({ username, password }));
     if (response.ok) {
       const data = await response.json();
       return NextResponse.json({ token: data.token }, { status: 200 });

@@ -26,8 +26,6 @@ export async function POST(req: NextRequest) {
             body: requestBody,
         });
 
-        // Log the response for debugging
-        console.log(response);
 
         if (response.ok) {
             const data = await response.json();

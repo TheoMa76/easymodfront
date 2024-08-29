@@ -20,7 +20,6 @@ export async function GET(request: NextRequest,{params}: {params: Id}) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       return NextResponse.json({ user:data }, { status: 200 });
     } else {
       const errorData = await response.json();

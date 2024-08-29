@@ -13,7 +13,6 @@ import { jwtDecode } from 'jwt-decode';
 
 async function getConnectedUser() {
   const token = Cookies.get('token');
-  console.log(token);
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {
@@ -137,7 +136,6 @@ const Profil = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         toast.success('Profil mis à jour');
         Cookies.remove('token');
         router.push('/login');
@@ -172,7 +170,6 @@ const Profil = () => {
 
     const fetchProgress = async () => {
       const progressData = await getProgress();
-      console.log(progressData);
       if (progressData && progressData.progress && progressData.progress.length > 0) {
         setProgress(progressData);
       } else {

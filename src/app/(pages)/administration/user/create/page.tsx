@@ -45,7 +45,6 @@ router.push('/login');
 
   const handleSubmit = async (values: any) => {
         const token = Cookies.get('token');
-        console.log(values);
       try {
         const response = await fetch(`/api/administration/user/create`, {
           method: 'POST', 

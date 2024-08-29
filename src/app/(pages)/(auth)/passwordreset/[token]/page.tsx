@@ -13,7 +13,6 @@ const ResetPasswordPage = (props: Props) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
-    console.log(token);
     
     async function handleSubmit(values: { [key: string]: string }) {
         const { password, confirmPassword } = values;

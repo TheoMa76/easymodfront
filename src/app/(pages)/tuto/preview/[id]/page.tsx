@@ -51,7 +51,6 @@ const fetchTutoriel = async (id: number): Promise<Tutoriel | null> => {
     });
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       if (data && typeof data.tuto === 'object') {
         const sortedTutoriel = sortTutoriel(data.tuto);
         return sortedTutoriel;
