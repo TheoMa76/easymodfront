@@ -31,7 +31,7 @@ const fetchUsers = async (): Promise<User[]> => {
       if (data && Array.isArray(data.users)) {
         return data.users;
       } else {
-        console.error('Les donnees de reponse ne sont pas dans le format attendu');
+        console.error('Les données de réponse ne sont pas dans le format attendu');
         return [];
       }
     } else {
@@ -40,7 +40,7 @@ const fetchUsers = async (): Promise<User[]> => {
       return [];
     }
   } catch (error) {
-    console.error('Erreur reseau:', error);
+    console.error('Erreur réseau:', error);
     return [];
   }
 };
@@ -57,50 +57,47 @@ const handleDelete = async (id: number) => {
       headers: { 'Content-Type': 'application/json' },
     });
     if (response.ok) {
-      toast.success("Utilisateur supprime.");
+      toast.success("Utilisateur supprimé.");
       return window.location.reload();
     } else {
       const errorData = await response.json();
       console.error('Erreur de connexion:', errorData);
     }
   } catch (error) {
-    console.error('Erreur reseau:', error);
+    console.error('Erreur réseau:', error);
   }
 }
 
 const UserCard: React.FC<{ user: User }> = ({ user }) => {
-  const token = Cookies.get('token');
   const [isYourself, setIsYourself] = useState(false);
+  const token = Cookies.get('token');
 
-  
-  if (!token) {
-    return 404;
-  }else{
-    const decodedToken = JSON.parse(atob(token.split('.')[1]));
-    setIsYourself(decodedToken.username === user.username);
-  }
+  useEffect(() => {
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setIsYourself(decodedToken.username === user.username);
+    }
+  }, [token, user.username]);
 
   return (
     <>
-    <MinecraftButton label="Creer un utilisateur" onClick={() => window.location.href = '/administration/user/create'} />
-    <Card className='m-5 w-full' key={user.id}>
-      <MinecraftHN as='h2'>{user.username}</MinecraftHN>
-      <TextChat className='w-full'>
-        <p>Email: {user.email}</p>
-        <p>Rôles: {user.roles.join(', ')}</p>
-        <p>Cree le: {formatDate(user.created_at)}</p>
-        <p>Modifie le: {formatDate(user.updated_at)}</p>
-      </TextChat>
-      {!isYourself ? (
-        <MinecraftButton label="Supprimer" onClick={() => handleDelete(user.id)} />
-      ) : (
-        <MinecraftText>Vous ne pouvez pas vous supprimer vous-même.</MinecraftText>
-      )}
-
-      <Link href={`/administration/user/${user.id}?id=${user.id}`}>
+      <Card className='m-5 w-full' key={user.id}>
+        <MinecraftHN as='h2'>{user.username}</MinecraftHN>
+        <TextChat className='w-full'>
+          <p>Email: {user.email}</p>
+          <p>Rôles: {user.roles.join(', ')}</p>
+          <p>Créé le: {formatDate(user.created_at)}</p>
+          <p>Modifié le: {formatDate(user.updated_at)}</p>
+        </TextChat>
+        {!isYourself ? (
+          <MinecraftButton label="Supprimer" onClick={() => handleDelete(user.id)} />
+        ) : (
+          <MinecraftText>Vous ne pouvez pas vous supprimer vous-même.</MinecraftText>
+        )}
+        <Link href={`/administration/user/${user.id}?id=${user.id}`}>
           <MinecraftButton label="Modifier"></MinecraftButton>
-      </Link>
-    </Card>
+        </Link>
+      </Card>
     </>
   );
 }
@@ -116,17 +113,15 @@ const AdminUserPage: React.FC = () => {
     } else {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp == null || decodedToken.exp < Date.now() / 1000) {
-        Cookies.remove('token');        
+        Cookies.remove('token');
         router.push('/login');
       }
     }
 
     let roles = [];
-    if(token != undefined && token != null){
+    if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       roles = decodedToken.roles || [];
-    }else{
-      roles = [];
     }
 
     if (!roles.includes('ROLE_ADMIN')) {
@@ -143,15 +138,17 @@ const AdminUserPage: React.FC = () => {
   }, [router]);
 
   return (
-      <div className='bg-black bg-opacity-50 w-full lg:w-10/12 flex mt-5 flex-col m-auto'>
-        {Array.isArray(users) && users.length > 0 ? (
-          users.map(u => (
-            <UserCard key={u.id} user={u} />
-          ))
-        ) : (
-          <MinecraftText>Aucun utilisateur trouve.</MinecraftText>
-        )}
-      </div>
+    <div className='bg-black bg-opacity-50 w-full lg:w-10/12 flex mt-5 flex-col m-auto'>
+            <MinecraftButton label="Créer un utilisateur" onClick={() => window.location.href = '/administration/user/create'} />
+
+      {Array.isArray(users) && users.length > 0 ? (
+        users.map(u => (
+          <UserCard key={u.id} user={u} />
+        ))
+      ) : (
+        <MinecraftText>Aucun utilisateur trouvé.</MinecraftText>
+      )}
+    </div>
   );
 };
 
